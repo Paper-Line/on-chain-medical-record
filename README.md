@@ -1,14 +1,6 @@
-# Juno: Next.js Example
+# On Chain Medical Record
 
-```sh
-npm create juno@latest -- --template nextjs-example
-```
-
-> 🧑‍🚀 **Seasoned dev?** Delete this file. Have fun!
-
-![A screenshot of the example](https://raw.githubusercontent.com/junobuild/create-juno/main/screenshots/screenshot-example.png)
-
-An example developed for [Juno](https://juno.build) using [Next.js](https://nextjs.org/docs).
+This is a project that aims to provide a decentralized medical record system. It is built on the Juno platform.
 
 ## ✨ Links & Resources
 
