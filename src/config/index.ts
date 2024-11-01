@@ -1,3 +1,5 @@
+import CryptoJS from "crypto-js";
+
 interface ConfigProps {
   encKey: CryptoJS.lib.WordArray;
   encIV: CryptoJS.lib.WordArray;
