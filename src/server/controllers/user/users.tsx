@@ -1,19 +1,19 @@
-import { setIdentityAsUser } from '@/server/features/users/users.service'
+import { setIdentityAsUser } from "@/server/features/users/users.service";
 
 async function setIdentity (data: { identity: string }) {
   try {
-    const user = await setIdentityAsUser(data)
+    const user = await setIdentityAsUser(data);
     if (!user) {
-      return undefined
+      return undefined;
     }
 
-    return user
+    return user;
   } catch (error) {
-    console.error(new Date().toISOString(), '- setIdentity:', error)
-    return undefined
+    console.error(new Date().toISOString(), "- setIdentity:", error);
+    return undefined;
   }
 }
 
 export {
   setIdentity
-}
+};

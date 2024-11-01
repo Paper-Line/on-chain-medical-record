@@ -1,7 +1,7 @@
-import {Backdrop} from '@/components/backdrop'
-import type {Note} from '@/types/note'
-import {deleteAsset, deleteDoc} from '@junobuild/core-peer'
-import {useState} from 'react'
+import {Backdrop} from "@/components/backdrop";
+import type {Note} from "@/types/note";
+import {deleteAsset, deleteDoc} from "@junobuild/core-peer";
+import {useState} from "react";
 
 interface DeleteProps {
   item: Note;
@@ -9,37 +9,37 @@ interface DeleteProps {
 }
 
 export const Delete = ({item, reload}: DeleteProps) => {
-  const [inProgress, setInProgress] = useState(false)
+  const [inProgress, setInProgress] = useState(false);
 
   const delItem = async (doc: Note) => {
-    setInProgress(true)
+    setInProgress(true);
 
     try {
       const {
         data: {url}
-      } = doc
+      } = doc;
 
       if (url !== undefined) {
-        const {pathname: fullPath} = new URL(url)
+        const {pathname: fullPath} = new URL(url);
 
         await deleteAsset({
-          collection: 'images',
+          collection: "images",
           fullPath
-        })
+        });
       }
 
       await deleteDoc({
-        collection: 'notes',
+        collection: "notes",
         doc
-      })
+      });
 
-      await reload()
+      await reload();
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
 
-    setInProgress(false)
-  }
+    setInProgress(false);
+  };
 
   return (
     <>
@@ -69,5 +69,5 @@ export const Delete = ({item, reload}: DeleteProps) => {
 
       {inProgress && <Backdrop spinner={true} />}
     </>
-  )
-}
+  );
+};

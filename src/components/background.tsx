@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from "next/image";
 
 export const Background = () => {
   return (
@@ -11,5 +11,5 @@ export const Background = () => {
         fill={true}
       />
     </div>
-  )
-}
+  );
+};

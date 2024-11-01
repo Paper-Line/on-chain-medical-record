@@ -2,7 +2,6 @@ import CryptoJS from "crypto-js";
 
 import CONFIG from "@/config";
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 export const encrypt = (text: string) => {
   try {
     const encrypted = CryptoJS.AES.encrypt(text, CONFIG.encKey, {
