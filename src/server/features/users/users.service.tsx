@@ -5,7 +5,12 @@ async function setIdentityAsUser (data: { identity: string }) {
   try {
     const record = {
       identity: data.identity,
-      code: nanoid()
+      code: nanoid(),
+      name: null,
+      age: null,
+      address: null,
+      email: null,
+      NIK: null
     };
     const key = nanoid();
 
