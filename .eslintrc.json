@@ -2,9 +2,6 @@
   "extends": "next/core-web-vitals",
   "rules": {
     "@typescript-eslint/no-confusing-void-expression": "off",
-    "semi": ["error", "never"],
-    "quotes": ["error", "single"],
-    "comma-dangle": ["error", "never"],
     "no-unused-vars": [
       "error",
       {
@@ -12,6 +9,11 @@
         "argsIgnorePattern": "^_"
       }
     ],
-    "space-before-function-paren": ["error", "always"]
+    "space-before-function-paren": ["off"],
+    "@typescript-eslint/no-explicit-any": ["off"],
+    "semi": ["error", "always"],
+    "quotes": ["error", "double"],
+    "comma-dangle": ["error", "never"],
+    "react-hooks/exhaustive-deps": "off"
   }
 }

@@ -1,13 +1,8 @@
 export const Footer = () => {
   return (
-    <footer className="mx-auto max-w-screen-2xl py-16 px-8 md:px-24 h-24 flex items-center justify-between md:justify-start md:gap-24 dark:text-white">
+    <footer className="mx-auto max-w-screen-2xl py-16 px-8 md:px-24 h-24 flex items-center justify-between md:justify-start md:gap-24">
       <span className="flex gap-2 items-baseline">
-        <svg
-          id="Layer_2"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1000 220.39"
-          width="80"
-          fill="currentColor">
+        <svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 220.39" width="80" fill="currentColor">
           <g>
             <path d="m238.29,0h220.39v110.19c0,60.82-49.38,110.19-110.19,110.19h0c-60.82,0-110.19-49.38-110.19-110.19V0h0Z"></path>
             <path d="m487.36,214.99h220.39v-104.8c0-60.86-49.34-110.19-110.19-110.19h-110.19s0,214.99,0,214.99Z"></path>
@@ -25,12 +20,9 @@ export const Footer = () => {
           aria-label="Go to Juno website and documentation"
           className="hover:text-lavender-blue-500 active:text-lavender-blue-400"
           target="_blank"
-          rel="noopener noreferrer">
-          <svg
-            width="32"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 49 49"
-            fill="currentColor">
+          rel="noopener noreferrer"
+        >
+          <svg width="32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 49" fill="currentColor">
             <g>
               <path d="M18.56,33.53h0c-1.07.48-2.08,1.09-3.01,1.81,1.97,1.69,4.38,2.8,6.95,3.19-1.59-1.43-2.92-3.12-3.93-5Z"></path>
               <path d="M16.31,25.43h-5.69c.17,3.3,1.52,6.44,3.79,8.84,1.06-.85,2.23-1.56,3.46-2.11-.94-2.12-1.48-4.41-1.57-6.73Z"></path>
@@ -58,12 +50,9 @@ export const Footer = () => {
           aria-label="Juno is open source on GitHub"
           className="hover:text-lavender-blue-500 active:text-lavender-blue-400"
           target="_blank"
-          rel="noopener noreferrer">
-          <svg
-            width="32"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 49 49"
-            fill="currentColor">
+          rel="noopener noreferrer"
+        >
+          <svg width="32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 49" fill="currentColor">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 47.47">
               <g>
                 <g>
@@ -81,12 +70,9 @@ export const Footer = () => {
           aria-label="Join our channel on Discord to chat or ask questions"
           className="hover:text-lavender-blue-500 active:text-lavender-blue-400"
           target="_blank"
-          rel="noopener noreferrer">
-          <svg
-            width="32"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 49 49"
-            fill="currentColor">
+          rel="noopener noreferrer"
+        >
+          <svg width="32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 49" fill="currentColor">
             <g>
               <g>
                 <g>
@@ -104,12 +90,9 @@ export const Footer = () => {
           aria-label="Follow Juno on X/Twitter"
           className="hover:text-lavender-blue-500 active:text-lavender-blue-400"
           target="_blank"
-          rel="noopener noreferrer">
-          <svg
-            width="32"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 49 49"
-            fill="currentColor">
+          rel="noopener noreferrer"
+        >
+          <svg width="32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 49" fill="currentColor">
             <g>
               <path d="M24.5,0C10.97,0,0,10.97,0,24.5s10.97,24.5,24.5,24.5,24.5-10.97,24.5-24.5S38.03,0,24.5,0ZM28.56,37.35l-6.35-8.87-8.29,8.87h-3.77l10.42-11.15-10.42-14.56h10.29l5.96,8.32,7.78-8.32h3.76l-9.91,10.6,10.82,15.1h-10.29Z"></path>
               <polygon points="15.46 14.38 29.96 34.62 33.55 34.62 19.05 14.38 15.46 14.38"></polygon>
@@ -118,5 +101,5 @@ export const Footer = () => {
         </a>
       </div>
     </footer>
-  )
-}
+  );
+};
