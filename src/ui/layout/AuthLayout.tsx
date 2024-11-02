@@ -14,7 +14,7 @@ export const AuthContext = createContext<{ user: User | undefined | null }>({ us
 
 function AuthLayout({ children }: AuthLayoutProps) {
   const [user, setUser] = useState<User | undefined | null>(undefined);
-  const [userPrifile, setUserProfile] = useState(undefined);
+  const [userProfile, setUserProfile] = useState(undefined);
 
   useEffect(() => {
     const sub = authSubscribe(async (user) => {
@@ -38,7 +38,7 @@ function AuthLayout({ children }: AuthLayoutProps) {
     return () => sub();
   }, []);
 
-  console.log("userProfile", userPrifile);
+  console.log("userProfile", userProfile);
 
   return (
     <div className="w-full h-full min-h-screen p-5 flex flex-col items-center justify-center">
