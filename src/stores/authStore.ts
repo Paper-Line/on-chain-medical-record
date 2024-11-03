@@ -1,13 +1,14 @@
 import { create } from "zustand";
-import { persist, subscribeWithSelector, createJSONStorage, StateStorage, PersistStorage } from "zustand/middleware";
+import { persist, subscribeWithSelector, PersistStorage } from "zustand/middleware";
 
 import { decrypt, encrypt, parser } from "@/utils/general";
 
-import type { AuthState, SetLoginDataActionProps } from "@/types/auth";
+import type { AuthStore, SetLoginDataActionProps } from "@/types/auth";
 
 const initialState = {
   loggedIn: false,
-  data: undefined
+  data: undefined,
+  userDetail: undefined
 };
 
 export const storage: PersistStorage<any> = {
@@ -35,7 +36,7 @@ export const storage: PersistStorage<any> = {
   }
 };
 
-const useAuthStore = create<AuthState>()(
+const useAuthStore = create<AuthStore>()(
   subscribeWithSelector(
     persist(
       (set) => ({
@@ -43,7 +44,8 @@ const useAuthStore = create<AuthState>()(
         setLoginDataAction: (data: SetLoginDataActionProps) => {
           set({
             loggedIn: data.loggedIn,
-            data: data
+            data: data.userData,
+            userDetail: data.userDetail
           });
         },
         resetLoginDataAction: () => {
@@ -56,9 +58,9 @@ const useAuthStore = create<AuthState>()(
       {
         name: "medrec-icp",
         storage,
-        partialize: (state: AuthState) => {
-          const { loggedIn, data } = state;
-          return { loggedIn, data };
+        partialize: (state: AuthStore) => {
+          const { loggedIn, data, userDetail } = state;
+          return { loggedIn, data, userDetail };
         }
       }
     )

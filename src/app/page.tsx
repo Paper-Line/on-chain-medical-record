@@ -7,12 +7,13 @@ import { redirect } from "next/navigation";
 import { Footer } from "@/components/footer";
 import { Login } from "@/components/login";
 
-import useAuthStore from "@/stores/authStore";
 import { bigIntToTimestamp } from "@/utils/general";
+
+import useAuthStore from "@/stores/authStore";
+import { getDetailUser } from "@/server/controllers/user/users";
 
 export default function Home() {
   const { setLoginDataAction, data } = useAuthStore();
-  // console.log("🚀 ~ Home ~ data:", data);
 
   useEffect(() => {
     (async () =>
@@ -24,7 +25,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const sub = authSubscribe((user) => {
+    const sub = authSubscribe(async (user) => {
       if (user && user !== undefined) {
         const createdAt = bigIntToTimestamp(user?.created_at || BigInt(0));
         const updatedAt = bigIntToTimestamp(user?.updated_at || BigInt(0));
@@ -36,9 +37,12 @@ export default function Home() {
           version: Number(user?.version)
         };
 
+        let userDetail = await getDetailUser(user?.owner || "");
+
         setLoginDataAction({
           loggedIn: true,
-          userData: newData
+          userData: newData,
+          userDetail: userDetail
         });
       }
     });
