@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 type OutsideClickProps = {
   ref: React.RefObject<HTMLElement>;
-  onClick: (event: MouseEvent) => void;
+  onClick: (_event: MouseEvent) => void;
 };
 
 export default function useOutsideClick({ ref, onClick }: OutsideClickProps) {

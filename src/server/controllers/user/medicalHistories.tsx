@@ -1,5 +1,5 @@
-import { addMedicalHistoryAsUser } from '../../features/medicalHistories/medicalHistories.service'
-import { addUserMedicalHistory } from '../../features/userMedicalHistories/userMedicalHistories.service'
+import { addMedicalHistoryAsUser } from "../../features/medicalHistories/medicalHistories.service";
+import { addUserMedicalHistory } from "../../features/userMedicalHistories/userMedicalHistories.service";
 
 interface IMedicalHistory {
   userCode: string
@@ -13,26 +13,26 @@ interface IMedicalHistory {
 
 async function addMedicalHistory (data: IMedicalHistory) {
   try {
-    const medicalHistory = await addMedicalHistoryAsUser(data)
+    const medicalHistory = await addMedicalHistoryAsUser(data);
     if (!medicalHistory) {
-      return undefined
+      return undefined;
     }
   
     const userMedicalHistory = await addUserMedicalHistory({
       userCode: data.userCode,
       medicalHistoryCode: medicalHistory.data.code
-    })
+    });
     if (!userMedicalHistory) {
-      return undefined
+      return undefined;
     }
   
-    return userMedicalHistory
+    return userMedicalHistory;
   } catch (error) {
-    console.error(new Date().toISOString(), '- addMedicalHistory:', error)
-    return undefined
+    console.error(new Date().toISOString(), "- addMedicalHistory:", error);
+    return undefined;
   }
 }
 
 export {
   addMedicalHistory
-}
+};
