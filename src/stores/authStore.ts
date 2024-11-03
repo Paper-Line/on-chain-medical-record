@@ -1,13 +1,14 @@
 import { create } from "zustand";
 import { persist, subscribeWithSelector, PersistStorage } from "zustand/middleware";
 
-import { decrypt, encrypt, parser } from "@/helpers/general";
+import { decrypt, encrypt, parser } from "@/utils/general";
 
-import type { AuthState, SetLoginDataActionProps } from "@/types/auth";
+import type { AuthStore, SetLoginDataActionProps } from "@/types/auth";
 
 const initialState = {
   loggedIn: false,
-  data: null
+  data: undefined,
+  userDetail: undefined
 };
 
 export const storage: PersistStorage<any> = {
@@ -26,7 +27,7 @@ export const storage: PersistStorage<any> = {
   },
 
   setItem(key: string, value: any): void {
-    const encrypted = encrypt(JSON.stringify(value)) || "";
+    const encrypted = encrypt(JSON.stringify(typeof value === "bigint" ? value.toString() : value)) || "";
     localStorage.setItem(key, encrypted);
   },
 
@@ -35,7 +36,7 @@ export const storage: PersistStorage<any> = {
   }
 };
 
-const useAuthStore = create<AuthState>()(
+const useAuthStore = create<AuthStore>()(
   subscribeWithSelector(
     persist(
       (set) => ({
@@ -43,16 +44,23 @@ const useAuthStore = create<AuthState>()(
         setLoginDataAction: (data: SetLoginDataActionProps) => {
           set({
             loggedIn: data.loggedIn,
-            data: data.userData
+            data: data.userData,
+            userDetail: data.userDetail
+          });
+        },
+        resetLoginDataAction: () => {
+          set({
+            loggedIn: false,
+            data: undefined
           });
         }
       }),
       {
         name: "medrec-icp",
         storage,
-        partialize: (state: AuthState) => {
-          const { loggedIn, data } = state;
-          return { loggedIn, data };
+        partialize: (state: AuthStore) => {
+          const { loggedIn, data, userDetail } = state;
+          return { loggedIn, data, userDetail };
         }
       }
     )
@@ -60,4 +68,3 @@ const useAuthStore = create<AuthState>()(
 );
 
 export default useAuthStore;
-
