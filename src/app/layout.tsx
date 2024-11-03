@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
+
 import "./globals.css";
 
-const jetBrainsMono = JetBrains_Mono({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Juno / Next.js Example",
-  description: "Welcome to my app!"
+  title: "Medical Record",
+  description: "Record all your medical history using this app!"
 };
 
 export default function RootLayout({
@@ -16,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${jetBrainsMono.className}`}>{children}</body>
+      <body className={`${inter.className}`}>{children}</body>
     </html>
   );
 }
