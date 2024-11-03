@@ -10,7 +10,7 @@ import { Login } from "@/components/login";
 import { bigIntToTimestamp } from "@/utils/general";
 
 import useAuthStore from "@/stores/authStore";
-import { getDetailUser } from "@/server/controllers/user/users";
+import { getDetailUser, setIdentity } from "@/server/controllers/user/users";
 
 export default function Home() {
   const { setLoginDataAction, data } = useAuthStore();
@@ -36,13 +36,27 @@ export default function Home() {
           updated_at: updatedAt,
           version: Number(user?.version)
         };
+        let userDetailData = undefined;
 
-        let userDetail = await getDetailUser(user?.owner || "");
+        const userDetail = await getDetailUser(user?.owner || "");
+
+        if (userDetail) {
+          userDetailData = userDetail;
+          console.log("🚀 ~ sub ~ userDetailData:", userDetailData)
+        } else {
+          const response = await setIdentity({ identity: user?.owner || "" });
+          if (response) {
+            console.log("🚀 ~ sub ~ response:", response)
+            userDetailData = response;
+          } else {
+            console.error("Failed to set identity");
+          }
+        }
 
         setLoginDataAction({
           loggedIn: true,
           userData: newData,
-          userDetail: userDetail
+          userDetail: userDetailData
         });
       }
     });

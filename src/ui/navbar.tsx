@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { redirect, usePathname } from "next/navigation";
+import { twMerge } from "tailwind-merge";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -14,14 +15,27 @@ import { signOut } from "@junobuild/core-peer";
 
 import useAuthStore from "@/stores/authStore";
 
+const NAVBAR_MENU = [
+  {
+    value: "dashboard"
+  },
+  {
+    value: "subscription"
+  },
+  {
+    value: "account-setting"
+  }
+];
+
 export default function Navbar() {
   const pathname = usePathname();
 
-  const { data: userData, loggedIn, resetLoginDataAction } = useAuthStore();
+  const { data: userData, userDetail, loggedIn, resetLoginDataAction } = useAuthStore();
+  console.log("🚀 ~ Navbar ~ userDetail:", userDetail)
 
   const [showMobileSidebar, setShowMobileSidebar] = useState<boolean>(false);
 
-  const activeButton = useMemo(() => {
+  const currentPath: string = useMemo(() => {
     if (pathname === "/dashboard") return "dashboard";
 
     return "";
@@ -36,29 +50,27 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    if (!userData || userData === undefined) return redirect("/");
+    if (!loggedIn) return redirect("/");
   }, [userData]);
 
   return (
-    <nav className="flex items-center justify-between w-full h-20 px-6 bg-white/10">
+    <nav className="w-full h-16 flex items-center justify-between px-5 border-b border-neutral-100">
       <Container>
         {/* Desktop Navbar */}
         <div className="w-full h-full hidden lg:flex items-center justify-between">
           <div className="flex items-center">
             <Link href="/">
-              <Image draggable={false} src={Logo} alt="logo" width={75} height={75} />
+              <Image draggable={false} src={Logo} alt="logo" width={125} height={75} />
             </Link>
-            <div className="flex items-center ml-12 space-x-4">
-              <NavButton active={activeButton === "dashboard"} href="/dashboard">
-                Dashboard
-              </NavButton>
-            </div>
+          </div>
+          <div className="flex-1 flex justify-center items-center gap-x-4">
+            <NavbarMenu currentPath={currentPath} />
           </div>
           <div className="flex items-center">
-            <div className="h-9 flex items-center ml-6 rounded-[3px]">
+            <div className="flex items-center ml-6 rounded-[3px]">
               <div className="w-5 h-5 rounded-full bg-blue-800" />
               <div className="h-full flex-1 flex flex-row items-center bg-white/50 px-1">
-                <p className="text-sm font-bold mr-4 text-black">{"userDetail?.username"}</p>
+                <p className="text-sm font-bold mr-4 text-black">{userDetail ? userDetail?.username : "{username}"}</p>
                 <Tooltip
                   contentClassName="top-7 -translate-x-full transform px-4 py-2.5 w-28"
                   content={
@@ -97,7 +109,7 @@ export default function Navbar() {
           <MobileNavbarMenu
             showMobileSidebar={showMobileSidebar}
             setShowMobileSidebar={setShowMobileSidebar}
-            activeButton={activeButton}
+            currentPath={currentPath}
             handleLogout={handleLogout}
           />
         </div>
@@ -105,6 +117,59 @@ export default function Navbar() {
     </nav>
   );
 }
+
+type MobileNavbarMenuProps = {
+  showMobileSidebar: boolean;
+  setShowMobileSidebar: (value: boolean) => void;
+  currentPath: string;
+  handleLogout?: () => void;
+};
+
+const MobileNavbarMenu = ({ currentPath, showMobileSidebar, setShowMobileSidebar, handleLogout }: MobileNavbarMenuProps) => {
+  const { userDetail } = useAuthStore();
+
+  return (
+    <div>
+      {/* Mobile Sidebar */}
+      <div
+        className={`fixed mt-0 right-0 w-full h-full bg-opacity-90 bg-black z-20 lg:hidden transition-transform duration-300 ${
+          showMobileSidebar ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex flex-col w-full h-full relative bg-neutral-200">
+          <div className="mt-10 w-full max-w-sm ml-auto flex flex-col px-4">
+            <div className="w-full">
+              <p className="text-sm font-bold text-black">{userDetail ? userDetail?.username : "{username}"}</p>
+            </div>
+
+            <div className="w-full h-px bg-neutral-100/50 my-5" />
+
+            <div className="flex flex-col gap-y-4">
+              <NavbarMenu currentPath={currentPath} />
+            </div>
+
+            <button onClick={handleLogout} className="mt-12 px-4 py-2 bg-black/70 text-red-400 rounded-lg border border-red-600">
+              Logout
+            </button>
+          </div>
+          <div className="flex-1" onClick={() => setShowMobileSidebar(false)} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const NavbarMenu = ({ currentPath }: { currentPath: string }) => {
+  return NAVBAR_MENU.map((item, index) => {
+    const displayName = item.value.replace(/-/g, " ");
+
+    return (
+      <NavButton key={index} active={currentPath === item.value} href={`/${item.value}`}>
+        {displayName}
+      </NavButton>
+    );
+  });
+};
 
 interface NavButtonProps {
   children: React.ReactNode;
@@ -117,69 +182,13 @@ const NavButton = ({ children, href, active, onClick }: NavButtonProps) => {
   return (
     <Link
       href={href}
-      className={`w-auto px-4 py-2 border-b border-sky-400
-        ${active ? "text-accent-1 font-bold" : "bg-transparent text-white/50"}
-      `}
+      className={twMerge(
+        "w-full lg:w-fit px-4 py-2 lg:py-1 rounded-lg bg-transparent capitalize border",
+        active ? "border-emerald-500" : "border-neutral-200"
+      )}
       onClick={onClick}
     >
       <p>{children}</p>
     </Link>
-  );
-};
-
-type MobileNavbarMenuProps = {
-  showMobileSidebar: boolean;
-  setShowMobileSidebar: (value: boolean) => void;
-  activeButton: string;
-  handleLogout?: () => void;
-};
-
-const MobileNavbarMenu = ({ activeButton, showMobileSidebar, setShowMobileSidebar, handleLogout }: MobileNavbarMenuProps) => {
-  const handleClick = () => {
-    setShowMobileSidebar(false);
-  };
-
-  return (
-    <div>
-      {/* Mobile Sidebar */}
-      <div
-        className={`fixed mt-2 right-0 w-full h-full bg-opacity-90 bg-black z-20 lg:hidden transform transition-transform duration-1000 ${
-          showMobileSidebar ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex flex-col w-full h-full relative bg-indigo-900/50">
-          <div className="mt-8 w-full max-w-sm ml-auto flex flex-col px-6">
-            <div className="w-full h-9 flex items-center rounded-[3px] overflow-hidden">
-              <Image src={Logo} alt="wallet" width={42} height={42} />
-              <div className="h-full flex-1 flex flex-row justify-between items-center bg-white/50 px-1">
-                <p className="text-sm font-bold text-black">{"userDetail?.username"}</p>
-              </div>
-            </div>
-            <div className="w-full mt-4 ">
-              <label className="text-white/50">Balance</label>
-              <div className="mt-1 w-full flex items-center">
-                <p className="ml-1 text-xl">123123</p>
-              </div>
-            </div>
-
-            <div className="w-full h-px bg-white/20 my-8" />
-
-            <div className="flex flex-col space-y-4">
-              <NavButton active={activeButton === "cashout"} onClick={handleClick} href="/cashout">
-                Cashout
-              </NavButton>
-              <NavButton active={activeButton === "cashout-history"} onClick={handleClick} href="/cashout-history">
-                Cashout History
-              </NavButton>
-            </div>
-
-            <button onClick={handleLogout} className="mt-16 px-4 py-2 text-red-400 border border-red-400 rounded">
-              Logout
-            </button>
-          </div>
-          <div className="flex-1" onClick={() => setShowMobileSidebar(false)} />
-        </div>
-      </div>
-    </div>
   );
 };
