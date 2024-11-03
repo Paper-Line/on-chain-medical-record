@@ -42,11 +42,11 @@ export default function Home() {
 
         if (userDetail) {
           userDetailData = userDetail;
-          console.log("🚀 ~ sub ~ userDetailData:", userDetailData)
+          console.log("🚀 ~ sub ~ userDetailData:", userDetailData);
         } else {
           const response = await setIdentity({ identity: user?.owner || "" });
           if (response) {
-            console.log("🚀 ~ sub ~ response:", response)
+            console.log("🚀 ~ sub ~ response:", response);
             userDetailData = response;
           } else {
             console.error("Failed to set identity");
