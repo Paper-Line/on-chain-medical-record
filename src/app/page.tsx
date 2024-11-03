@@ -1,14 +1,19 @@
 "use client";
 
 import { useEffect } from "react";
-import { initSatellite } from "@junobuild/core-peer";
+import { authSubscribe, initSatellite } from "@junobuild/core-peer";
+import { redirect } from "next/navigation";
 
-import AuthLayout from "@/ui/layout/AuthLayout";
 import { Footer } from "@/components/footer";
-import { Modal } from "@/components/modal";
-import { Table } from "@/components/table";
+import { Login } from "@/components/login";
+
+import useAuthStore from "@/stores/authStore";
+import { bigIntToTimestamp } from "@/utils/general";
 
 export default function Home() {
+  const { setLoginDataAction, data } = useAuthStore();
+  // console.log("🚀 ~ Home ~ data:", data);
+
   useEffect(() => {
     (async () =>
       await initSatellite({
@@ -18,17 +23,39 @@ export default function Home() {
       }))();
   }, []);
 
+  useEffect(() => {
+    const sub = authSubscribe((user) => {
+      if (user && user !== undefined) {
+        const createdAt = bigIntToTimestamp(user?.created_at || BigInt(0));
+        const updatedAt = bigIntToTimestamp(user?.updated_at || BigInt(0));
+
+        const newData = {
+          ...user,
+          created_at: createdAt,
+          updated_at: updatedAt,
+          version: Number(user?.version)
+        };
+
+        setLoginDataAction({
+          loggedIn: true,
+          userData: newData
+        });
+      }
+    });
+
+    return () => sub();
+  }, []);
+
+  useEffect(() => {
+    if (data && data !== undefined) redirect("dashboard");
+  }, [data]);
+
   return (
     <>
       <div className="relative isolate min-h-[100dvh]">
         <main className="mx-auto max-w-screen-2xl py-16 px-8 md:px-24">
           <h1 className="text-5xl md:text-6xl font-bold tracking-tight md:pt-24">Medical Tracker</h1>
-
-          <AuthLayout>
-            <Table />
-
-            <Modal />
-          </AuthLayout>
+          <Login />
         </main>
 
         <Footer />

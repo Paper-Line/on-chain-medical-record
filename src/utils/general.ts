@@ -34,3 +34,10 @@ export function parser(string: string) {
     return null;
   }
 }
+
+export function bigIntToTimestamp(milliseconds: bigint): number {
+  // Convert BigInt to a number, handling potential precision loss
+  const millisecondsNumber = Number(milliseconds);
+
+  return millisecondsNumber;
+}
