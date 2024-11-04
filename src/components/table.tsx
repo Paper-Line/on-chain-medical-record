@@ -1,91 +1,169 @@
-import { useContext, useEffect, useState } from "react";
-import { listDocs } from "@junobuild/core-peer";
+import { useMemo } from "react";
+import DataTable, { createTheme } from "react-data-table-component";
 
-import { Delete } from "@/components/delete";
-import { AuthContext } from "@/ui/layout/AuthLayout";
+import Container from "./container";
 
-import type { Note, NoteData } from "@/types/note";
+type ColumnProps = {
+  name: string;
+  selector: string;
+  sortable?: boolean;
+  center?: boolean;
+  width?: string;
+  minWidth?: string;
+  maxWidth?: string;
+  sort?: string;
+};
 
-export const Table = () => {
-  const { user } = useContext(AuthContext);
-  const [items, setItems] = useState<Note[]>([]);
+createTheme("dark", {
+  background: {
+    default: "transparent"
+  }
+});
 
-  useEffect(() => {
-    window.addEventListener("reload", list);
-
-    return () => {
-      window.removeEventListener("reload", list);
-    };
-  }, []);
-
-  const list = async () => {
-    const { items } = await listDocs<NoteData>({
-      collection: "notes",
-      filter: {}
-    });
-
-    setItems(items);
-  };
-
-  useEffect(() => {
-    if (user === undefined || user === null) {
-      setItems([]);
-      return;
-    }
-    (async () => await list())();
-  }, [user]);
-
+const NoDataComponent = () => {
   return (
-    <div className="w-full max-w-2xl mt-8" role="table">
-      <div role="row">
-        <span role="columnheader" aria-sort="none">
-          Entries
-        </span>
-      </div>
-
-      <div className="py-2" role="rowgroup">
-        {items.map((item, index) => {
-          const {
-            key,
-            data: { text, url }
-          } = item;
-
-          return (
-            <div
-              key={key}
-              className="flex items-center gap-2 px-3 mb-4 border-black dark:border-lavender-blue-500 border-[3px] rounded bg-white dark:bg-black dark:text-white transition-all shadow-[8px_8px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_#7888FF]"
-              role="row"
-            >
-              <span role="cell" aria-rowindex={index} className="p-1 flex align-center min-w-max">
-                {index + 1} )
-              </span>
-              <div role="cell" className="line-clamp-3 overflow-hidden grow">
-                {text}
-              </div>
-              <div role="cell" className="flex gap-2 justify-center align-middle">
-                {url !== undefined ? (
-                  <a
-                    aria-label="Open data"
-                    rel="noopener noreferrer"
-                    href={url}
-                    target="_blank"
-                    className="hover:text-lavender-blue-500 active:text-lavender-blue-400"
-                  >
-                    <svg width="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" fill="currentColor">
-                      <g>
-                        <rect fill="none" className="opacity-25" width="29" height="29" />
-                        <path d="M8.36,26.92c-2,0-3.88-.78-5.29-2.19C.15,21.81.15,17.06,3.06,14.14L12.57,4.64c.39-.39,1.02-.39,1.41,0s.39,1.02,0,1.41L4.48,15.56c-2.14,2.14-2.14,5.62,0,7.76,1.04,1.04,2.41,1.61,3.88,1.61s2.84-.57,3.88-1.61l12.79-12.79c1.47-1.47,1.47-3.87,0-5.34-1.47-1.47-3.87-1.47-5.34,0l-12.45,12.45c-.73.73-.73,1.91,0,2.64.73.73,1.91.73,2.64,0l9.17-9.17c.39-.39,1.02-.39,1.41,0s.39,1.02,0,1.41l-9.17,9.17c-1.51,1.51-3.96,1.51-5.47,0-1.51-1.51-1.51-3.96,0-5.47L18.26,3.77c2.25-2.25,5.92-2.25,8.17,0s2.25,5.92,0,8.17l-12.79,12.79c-1.41,1.41-3.29,2.19-5.29,2.19Z" />
-                      </g>
-                    </svg>
-                  </a>
-                ) : undefined}
-
-                <Delete item={item} reload={list} />
-              </div>
-            </div>
-          );
-        })}
-      </div>
+    <div className="w-full p-5 flex flex-col justify-center items-center">
+      <h3 className="text-teal-500 font-bold">No Data Found</h3>
     </div>
   );
+};
+
+const TableLoadingComponent = () => {
+  const defaultClassName = useMemo(() => {
+    return "w-full bg-neutral-200 rounded";
+  }, []);
+
+  return (
+    <Container className="w-full animate-pulse overflow-x-auto">
+      <div className="w-full min-w-[999px] grid grid-cols-8 gap-5">
+        <div className="col-span-1">
+          <div className={`${defaultClassName} h-7 mb-7`} />
+          <div className={`${defaultClassName} h-10 mb-2.5`} />
+          <div className={`${defaultClassName} h-10 mb-2.5`} />
+          <div className={`${defaultClassName} h-10 mb-2.5`} />
+          <div className={`${defaultClassName} h-10`} />
+        </div>
+        <div className="col-span-2">
+          <div className={`${defaultClassName} h-7 mb-7`} />
+          <div className={`${defaultClassName} h-10 mb-2.5`} />
+          <div className={`${defaultClassName} h-10 mb-2.5`} />
+          <div className={`${defaultClassName} h-10 mb-2.5`} />
+          <div className={`${defaultClassName} h-10`} />
+        </div>
+        <div className="col-span-2">
+          <div className={`${defaultClassName} h-7 mb-7`} />
+          <div className={`${defaultClassName} h-10 mb-2.5`} />
+          <div className={`${defaultClassName} h-10 mb-2.5`} />
+          <div className={`${defaultClassName} h-10 mb-2.5`} />
+          <div className={`${defaultClassName} h-10`} />
+        </div>
+        <div className="col-span-1">
+          <div className={`${defaultClassName} h-7 mb-7`} />
+          <div className={`${defaultClassName} h-10 mb-2.5`} />
+          <div className={`${defaultClassName} h-10 mb-2.5`} />
+          <div className={`${defaultClassName} h-10 mb-2.5`} />
+          <div className={`${defaultClassName} h-10`} />
+        </div>
+        <div className="col-span-2">
+          <div className={`${defaultClassName} h-7 mb-7`} />
+          <div className={`${defaultClassName} h-10 mb-2.5`} />
+          <div className={`${defaultClassName} h-10 mb-2.5`} />
+          <div className={`${defaultClassName} h-10 mb-2.5`} />
+          <div className={`${defaultClassName} h-10`} />
+        </div>
+      </div>
+    </Container>
+  );
+};
+
+export const Table = (props: any) => {
+  const {
+    defaultSortField,
+    pagination = true,
+    paginationRowsPerPageOptions = [25, 50, 75, 100],
+    defaultSort = "createdAt",
+    paginations = {},
+    ...rest
+  } = props;
+  const { setPage = () => {}, setLimit = () => {}, setSortColumn = () => {}, setOrder = () => {} } = paginations;
+
+  const handleSort = (column: ColumnProps, sortDirection: string) => {
+    setSortColumn(column.sort || defaultSortField || defaultSort);
+    setOrder(sortDirection.toUpperCase());
+  };
+  const handlePageChange = (page: number) => setPage(page);
+  const handleRowsPerPageChange = (limit: number) => setLimit(limit);
+
+  return (
+    <DataTable
+      {...rest}
+      customStyles={defaultStyle}
+      onSort={handleSort}
+      onChangePage={handlePageChange}
+      onChangeRowsPerPage={handleRowsPerPageChange}
+      pagination={pagination}
+      paginationServer={pagination}
+      paginationRowsPerPageOptions={paginationRowsPerPageOptions}
+      paginationComponentOptions={{
+        rowsPerPageText: "Data per page:",
+        rangeSeparatorText: "of"
+      }}
+      progressComponent={<TableLoadingComponent />}
+      noDataComponent={<NoDataComponent />}
+      theme="light"
+    />
+  );
+};
+
+const defaultStyle = {
+  table: {
+    style: {
+      width: "100%",
+      background: "transparent",
+      color: "#404245"
+    }
+  },
+  responsiveWrapper: {
+    style: {
+      borderRadius: "0px !important"
+    }
+  },
+  headRow: {
+    style: {
+      fontWeight: "semibold",
+      fontSize: "14px",
+    }
+  },
+  rows: {
+    style: {
+      backgroundColor: "transparent",
+      "&:not(:last-of-type)": {
+        border: "none"
+      },
+      fontSize: "14px",
+      fontWeight: 400
+    }
+  },
+  headCells: {
+    style: {
+      backgroundColor: "transparent",
+      padding: "2px 12px",
+      border: "solid 1px #F3F3F3",
+    }
+  },
+  cells: {
+    style: {
+      border: "solid 1px #F3F3F3",
+      color: "#404245",
+      padding: "2px 12px",
+    }
+  },
+  pagination: {
+    style: {
+      backgroundColor: "transparent"
+    },
+    pageButtonsStyle: {
+      fill: "#404245"
+    }
+  }
 };
