@@ -299,7 +299,7 @@ function DashboardPage() {
   }, []);
 
   return (
-    <main>
+    <main className="">
       <div className="w-full h-full px-5 py-8 bg-neutral-100">
         <Container className="max-w-screen-xl">
           <button className="w-fit py-2 px-5 rounded-lg bg-emerald-500 text-white font-medium">New Medical Record</button>
@@ -315,7 +315,7 @@ function DashboardPage() {
         </Container>
       </div>
 
-      <div>
+      <div className="min-h-96 bg-white">
         <Container className="max-w-screen-xl">
           <div className="w-full flex flex-row justify-between items-start p-5">
             <div>

@@ -31,12 +31,12 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const { data: userData, userDetail, loggedIn, resetLoginDataAction } = useAuthStore();
-  console.log("🚀 ~ Navbar ~ userDetail:", userDetail)
 
   const [showMobileSidebar, setShowMobileSidebar] = useState<boolean>(false);
 
   const currentPath: string = useMemo(() => {
     if (pathname === "/dashboard") return "dashboard";
+    if (pathname === "/account-setting") return "account-setting";
 
     return "";
   }, [pathname]);
