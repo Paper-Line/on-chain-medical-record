@@ -10,7 +10,13 @@ import { Login } from "@/components/login";
 import { bigIntToTimestamp } from "@/utils/general";
 
 import useAuthStore from "@/stores/authStore";
-import { getDetailUser, setIdentity } from "@/server/controllers/user/users";
+import { getDetailUserController, setIdentity } from "@/server/controllers/user/users";
+
+import config from "@/config";
+
+if (config.sateliteId === undefined) {
+  throw new Error("Satellite ID is not defined");
+}
 
 export default function Home() {
   const { setLoginDataAction, data } = useAuthStore();
@@ -18,6 +24,7 @@ export default function Home() {
   useEffect(() => {
     (async () =>
       await initSatellite({
+        satelliteId: config.sateliteId,
         workers: {
           auth: true
         }
@@ -38,7 +45,7 @@ export default function Home() {
         };
         let userDetailData = undefined;
 
-        const userDetail = await getDetailUser(user?.owner || "");
+        const userDetail = await getDetailUserController(user?.owner || "");
 
         if (userDetail) {
           userDetailData = userDetail;

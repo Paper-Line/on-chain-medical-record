@@ -1,43 +1,10 @@
-import { setDoc, listDocs } from "@junobuild/core-peer";
-import { nanoid } from "nanoid";
-
-async function setIdentityAsUser (data: { identity: string }) {
-  try {
-    const record = {
-      identity: data.identity,
-      code: nanoid(),
-      name: null,
-      age: null,
-      address: null,
-      email: null,
-      NIK: null
-    };
-    const key = nanoid();
-
-    const doc = await setDoc({
-      collection: "users",
-      doc: {
-        key,
-        data: record
-      }
-    });
-
-    return doc;
-  } catch (error) {
-    console.error(new Date().toISOString(), "- setIdentityAsUser:", error);
-    throw error;
-  }
-}
+import { getDoc } from "@junobuild/core-peer";
 
 async function getDetailUserAsUser (identity: string) {
   try {
-    const doc = await listDocs({
+    const doc = await getDoc({
       collection: "users",
-      filter: {
-        matcher: {
-          key: identity
-        }
-      }
+      key: identity
     });
 
     return doc;
@@ -48,6 +15,5 @@ async function getDetailUserAsUser (identity: string) {
 }
 
 export {
-  getDetailUserAsUser,
-  setIdentityAsUser
+  getDetailUserAsUser
 };

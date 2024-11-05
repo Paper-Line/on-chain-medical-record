@@ -1,4 +1,4 @@
-import { getDetailUserAsUser, setIdentityAsUser } from "@/server/features/users/users.service";
+import { getDetailUser, setIdentityAsUser } from "@/server/users.service";
 
 async function setIdentity (data: { identity: string }) {
   try {
@@ -14,9 +14,9 @@ async function setIdentity (data: { identity: string }) {
   }
 }
 
-async function getDetailUser (identity: string) {
+async function getDetailUserController (identity: string) {
   try {
-    const user = await getDetailUserAsUser(identity);
+    const user = await getDetailUser(identity);
     if (!user) {
       return undefined;
     }
@@ -29,6 +29,6 @@ async function getDetailUser (identity: string) {
 }
 
 export {
-  getDetailUser,
+  getDetailUserController,
   setIdentity
 };
