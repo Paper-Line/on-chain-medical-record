@@ -1,4 +1,4 @@
-import { setDoc } from "@junobuild/core-peer";
+import { listDocs, setDoc } from "@junobuild/core-peer";
 import { nanoid } from "nanoid";
 
 interface UserMedicalHistories {
@@ -28,11 +28,30 @@ async function addUserMedicalHistory (data: {
   
     return doc;
   } catch (error) {
-    console.error(new Date().toISOString(), "- addUserMedicalHistory:", error);
     throw error;
   }
 }
 
+async function getMedicalHistoriesByUserCode(data: { userCode: string }) {
+  try {
+    const userMedicalHistories = await listDocs({
+      collection: "userMedicalHistories",
+      filter: {
+        owner: data.userCode
+      }
+    });
+    if (!userMedicalHistories) {
+      return undefined;
+    }
+  
+    return userMedicalHistories.items as unknown as UserMedicalHistories[];
+  } catch (error) {
+    throw error;
+  }
+  
+}
+
 export {
-  addUserMedicalHistory
+  addUserMedicalHistory,
+  getMedicalHistoriesByUserCode
 };
