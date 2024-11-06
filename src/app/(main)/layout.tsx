@@ -1,4 +1,4 @@
-import Navbar from "@/ui/navbar";
+import Navbar from "@/ui/private/navbar";
 
 export default function PrivateLayout({
   children
@@ -7,7 +7,7 @@ export default function PrivateLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`bg-neutral-100`}>
+      <body className={`bg-[#f6fbfe]`}>
         <Navbar />
         {children}
       </body>
