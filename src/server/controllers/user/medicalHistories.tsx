@@ -20,7 +20,7 @@ async function addMedicalHistory (data: IMedicalHistory) {
   
     const userMedicalHistory = await addUserMedicalHistory({
       userCode: data.userCode,
-      medicalHistoryCode: medicalHistory.data.code
+      medicalHistoryCode: medicalHistory.code
     });
     if (!userMedicalHistory) {
       return undefined;

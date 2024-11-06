@@ -26,7 +26,7 @@ async function addUserMedicalHistory (data: {
       }
     });
   
-    return doc;
+    return doc.data as UserMedicalHistories;
   } catch (error) {
     throw error;
   }

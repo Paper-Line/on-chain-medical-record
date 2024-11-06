@@ -36,7 +36,7 @@ async function addMedicalHistoryAsUser (data: {
       }
     });
   
-    return doc;
+    return doc.data as MedicalHistory;
   } catch (error) {
     throw error;
   }
