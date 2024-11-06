@@ -8,7 +8,7 @@ import Link from "next/link";
 
 import Logo from "@/assets/IC_logo_horizontal.svg";
 
-import Tooltip from "./tooltip";
+import Tooltip from "@/components/tooltip";
 import Container from "@/components/container";
 
 import { signOut } from "@junobuild/core-peer";
@@ -31,6 +31,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const { data: userData, userDetail, loggedIn, resetLoginDataAction } = useAuthStore();
+  console.log("🚀 ~ Navbar ~ userData:", userDetail)
 
   const [showMobileSidebar, setShowMobileSidebar] = useState<boolean>(false);
 
@@ -51,7 +52,7 @@ export default function Navbar() {
 
   useEffect(() => {
     if (!loggedIn) return redirect("/");
-  }, [userData]);
+  }, [loggedIn]);
 
   return (
     <nav className="w-full h-16 flex items-center justify-between px-5 border-b border-neutral-100">
@@ -70,7 +71,7 @@ export default function Navbar() {
             <div className="flex items-center ml-6 rounded-[3px]">
               <div className="w-5 h-5 rounded-full bg-blue-800" />
               <div className="h-full flex-1 flex flex-row items-center bg-white/50 px-1">
-                <p className="text-sm font-bold mr-4 text-black">{userDetail ? userDetail?.username : "{username}"}</p>
+                <p className="text-sm font-bold mr-4 text-black">{userDetail?.name || "-"}</p>
                 <Tooltip
                   contentClassName="top-7 -translate-x-full transform px-4 py-2.5 w-28"
                   content={
