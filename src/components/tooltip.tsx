@@ -35,7 +35,7 @@ export default function Tooltip({ content, contentClassName, children }: Tooltip
         </div>
         {showTooltip && (
           <div
-            className={`absolute transform bg-gray-800 text-white rounded-md py-1 px-2 transition-all duration-300 z-50 ${contentClassName}`}
+            className={`absolute transform bg-neutral-100 rounded-md py-1 px-4 border border-neutral-300 transition-all duration-300 z-50 ${contentClassName}`}
           >
             {content}
           </div>

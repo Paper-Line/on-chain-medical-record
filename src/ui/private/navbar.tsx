@@ -55,7 +55,7 @@ export default function Navbar() {
   }, [loggedIn]);
 
   return (
-    <nav className="w-full h-16 flex items-center justify-between px-5 border-b border-neutral-100">
+    <nav className="w-full h-16 bg-white flex items-center justify-between px-5 border-b border-neutral-100">
       <Container>
         {/* Desktop Navbar */}
         <div className="w-full h-full hidden lg:flex items-center justify-between">
@@ -77,7 +77,7 @@ export default function Navbar() {
                   content={
                     <div className="w-full flex flex-col space-y-2">
                       <button onClick={handleLogout} className="flex items-center space-x-2">
-                        <p className="text-white/75">Logout</p>
+                        <p className="text-black">Logout</p>
                       </button>
                     </div>
                   }
