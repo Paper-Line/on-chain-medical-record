@@ -1,0 +1,9 @@
+{
+  "entryPoints": [
+    "src/server/users.service.ts",
+    "src/server/outlets.service.ts",
+    "src/server/medicalHistories.service.ts",
+  ],
+  "out": "docs",
+  "includeVersion": true,
+}
