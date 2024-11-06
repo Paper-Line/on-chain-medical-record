@@ -48,12 +48,10 @@ export default function Home() {
         const userDetail = await getDetailUserController(user?.owner || "");
 
         if (userDetail) {
-          userDetailData = userDetail;
-          console.log("🚀 ~ sub ~ userDetailData:", userDetailData);
+          userDetailData = userDetail.data;
         } else {
           const response = await setIdentity({ identity: user?.owner || "" });
           if (response) {
-            console.log("🚀 ~ sub ~ response:", response);
             userDetailData = response;
           } else {
             console.error("Failed to set identity");
