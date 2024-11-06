@@ -1,24 +1,24 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { setDoc, uploadFile } from "@junobuild/core-peer";
+import { /*useContext, useEffect,*/ useRef, useState } from "react";
+import { setDoc/*, uploadFile*/ } from "@junobuild/core-peer";
 import { nanoid } from "nanoid";
 
 import { Backdrop } from "@/components/backdrop";
 import { Button } from "@/components/button";
-import { AuthContext } from "@/ui/layout/AuthLayout";
+// import { AuthContext } from "@/ui/layout/AuthLayout";
 
 export const Modal = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [inputText, setInputText] = useState("");
-  const [valid, setValid] = useState(false);
+  const [valid, _setValid] = useState(false);
   const [progress, setProgress] = useState(false);
   const [file, setFile] = useState<File | undefined>(undefined);
   const uploadElement = useRef<HTMLInputElement>(null);
 
-  const { user } = useContext(AuthContext);
+  // const { user } = useContext(AuthContext);
 
-  useEffect(() => {
-    setValid(inputText !== "" && user !== undefined && user !== null);
-  }, [showModal, inputText, user]);
+  // useEffect(() => {
+  //   setValid(inputText !== "" && user !== undefined && user !== null);
+  // }, [showModal, inputText, user]);
 
   const reload = () => {
     const event = new CustomEvent("reload");
@@ -27,9 +27,9 @@ export const Modal = () => {
 
   const add = async () => {
     // Demo purpose therefore edge case not properly handled
-    if (user === undefined || user === null) {
-      return;
-    }
+    // if (user === undefined || user === null) {
+    //   return;
+    // }
 
     setProgress(true);
 
@@ -37,15 +37,15 @@ export const Modal = () => {
       let url;
 
       if (file !== undefined) {
-        const filename = `${user.key}-${file.name}`;
+        // const filename = `${user.key}-${file.name}`;
 
-        const { downloadUrl } = await uploadFile({
-          collection: "images",
-          data: file,
-          filename
-        });
+        // const { downloadUrl } = await uploadFile({
+        //   collection: "images",
+        //   data: file,
+        //   filename
+        // });
 
-        url = downloadUrl;
+        // url = downloadUrl;
       }
 
       const key = nanoid();
