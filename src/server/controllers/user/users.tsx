@@ -2,7 +2,7 @@ import { getDetailUser, setIdentityAsUser } from "@/server/users.service";
 
 async function setIdentity (data: { identity: string }) {
   try {
-    const user = await setIdentityAsUser(data);
+    const user = await setIdentityAsUser(data.identity);
     if (!user) {
       return undefined;
     }

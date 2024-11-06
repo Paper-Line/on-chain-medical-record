@@ -7,6 +7,13 @@ export interface IOutlet {
   address: string;
 }
 
+/**
+ * Adds a new outlet to the collection.
+ * @param {Object} data - The data for the new outlet.
+ * @param {string} data.name - The name of the outlet.
+ * @param {string} data.address - The address of the outlet.
+ * @returns {Promise<Object>} The added outlet.
+ */
 export async function addOutlet(data: { name: string; address: string }) {
   const code = nanoid();
   const outlet = await setDoc({
@@ -22,6 +29,11 @@ export async function addOutlet(data: { name: string; address: string }) {
   return outlet;
 }
 
+/**
+ * Retrieves an outlet by its code.
+ * @param {string} code - The code of the outlet.
+ * @returns {Promise<Object>} The retrieved outlet.
+ */
 export async function getOutlet(code: string) {
   const outlet = await getDoc({
     collection: "outlets",
