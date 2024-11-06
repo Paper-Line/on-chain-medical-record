@@ -11,6 +11,7 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   register?: any;
 }
 
+// eslint-disable-next-line react/display-name
 export const TextInput = forwardRef<HTMLButtonElement, TextInputProps>((props, ref) => {
   const { containerClassName, inputClassName, labelClassName, additionalElement, error, register = () => {}, ...restOfProps } = props;
   const { name, placeholder } = restOfProps;

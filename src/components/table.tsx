@@ -131,7 +131,7 @@ const defaultStyle = {
   headRow: {
     style: {
       fontWeight: "semibold",
-      fontSize: "14px",
+      fontSize: "14px"
     }
   },
   rows: {
@@ -148,14 +148,14 @@ const defaultStyle = {
     style: {
       backgroundColor: "transparent",
       padding: "2px 12px",
-      border: "solid 1px #F3F3F3",
+      border: "solid 1px #F3F3F3"
     }
   },
   cells: {
     style: {
       border: "solid 1px #F3F3F3",
       color: "#404245",
-      padding: "2px 12px",
+      padding: "2px 12px"
     }
   },
   pagination: {
