@@ -1,13 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { /*useContext, */useEffect, useState } from "react";
 import { listDocs } from "@junobuild/core-peer";
 
 import { Delete } from "@/components/delete";
-import { AuthContext } from "@/ui/layout/AuthLayout";
+// import { AuthContext } from "@/ui/layout/AuthLayout";
 
 import type { Note, NoteData } from "@/types/note";
 
 export const Table = () => {
-  const { user } = useContext(AuthContext);
+  // const { user } = useContext(AuthContext);
   const [items, setItems] = useState<Note[]>([]);
 
   useEffect(() => {
@@ -27,13 +27,13 @@ export const Table = () => {
     setItems(items);
   };
 
-  useEffect(() => {
-    if (user === undefined || user === null) {
-      setItems([]);
-      return;
-    }
-    (async () => await list())();
-  }, [user]);
+  // useEffect(() => {
+  //   if (user === undefined || user === null) {
+  //     setItems([]);
+  //     return;
+  //   }
+  //   (async () => await list())();
+  // }, [user]);
 
   return (
     <div className="w-full max-w-2xl mt-8" role="table">

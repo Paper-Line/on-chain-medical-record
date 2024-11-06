@@ -7,7 +7,7 @@ export default function PrivateLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`bg-[#f6fbfe]`}>
+      <body className={"bg-[#f6fbfe]"}>
         <Navbar />
         {children}
       </body>

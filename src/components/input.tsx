@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
 interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {

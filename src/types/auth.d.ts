@@ -1,10 +1,10 @@
-import { type User } from "@junobuild/core-peer";
+// import { type User } from "@junobuild/core-peer";
 
 export type AuthStore = {
   loggedIn: boolean;
   data: any | undefined | null;
   userDetail: any | undefined | null;
-  setLoginDataAction: (data: SetLoginDataActionProps) => void;
+  setLoginDataAction: (_data: SetLoginDataActionProps) => void;
   resetLoginDataAction: () => void;
 };
 

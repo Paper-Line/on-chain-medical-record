@@ -30,8 +30,8 @@ const NAVBAR_MENU = [
 export default function Navbar() {
   const pathname = usePathname();
 
-  const { data: userData, userDetail, loggedIn, resetLoginDataAction } = useAuthStore();
-  console.log("🚀 ~ Navbar ~ userData:", userDetail)
+  const { data: _userData, userDetail, loggedIn, resetLoginDataAction } = useAuthStore();
+  console.log("🚀 ~ Navbar ~ userData:", userDetail);
 
   const [showMobileSidebar, setShowMobileSidebar] = useState<boolean>(false);
 
@@ -121,7 +121,7 @@ export default function Navbar() {
 
 type MobileNavbarMenuProps = {
   showMobileSidebar: boolean;
-  setShowMobileSidebar: (value: boolean) => void;
+  setShowMobileSidebar: (_value: boolean) => void;
   currentPath: string;
   handleLogout?: () => void;
 };
