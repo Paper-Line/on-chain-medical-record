@@ -7,6 +7,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      NEXT_PUBLIC_APP_SATELITE_ID: ${{ secrets.NEXT_PUBLIC_APP_SATELITE_ID }}
+      NEXT_PUBLIC_APP_ENC_KEY: ${{ secrets.NEXT_PUBLIC_APP_ENC_KEY }}
+      NEXT_PUBLIC_APP_ENC_IV: ${{ secrets.NEXT_PUBLIC_APP_ENC_IV }}
+
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
@@ -28,6 +34,3 @@ jobs:
           args: deploy
         env:
           JUNO_TOKEN: ${{ secrets.JUNO_TOKEN }}
-          NEXT_PUBLIC_APP_ENC_KEY: ${{ secrets.NEXT_PUBLIC_APP_ENC_KEY }}
-          NEXT_PUBLIC_APP_ENC_IV: ${{ secrets.NEXT_PUBLIC_APP_ENC_IV }}
-          NEXT_PUBLIC_APP_SATELITE_ID: ${{ secrets.NEXT_PUBLIC_APP_SATELITE_ID }}
