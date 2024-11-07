@@ -24,11 +24,17 @@ jobs:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Install Dependencies
+      - name: Install Dependencies 📦
         run: npm ci
 
-      - name: Build
+      - name: Build 🏗
         run: npm run build
+
+      - name: Check files 📂
+        run: ls -l
+
+      - name: Check build output 📂
+        run: ls -l out
 
       - name: Deploy to Juno
         uses: junobuild/juno-action@main
