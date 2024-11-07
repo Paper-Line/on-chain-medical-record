@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
 interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  placeholder: string;
+  label: string | ReactNode;
   containerClassName?: string;
   inputClassName?: string;
   labelClassName?: string;
@@ -13,7 +13,7 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export const TextInput = (props: TextInputProps) => {
   const { containerClassName, inputClassName, labelClassName, additionalElement, error, ...restOfProps } = props;
-  const { name, placeholder } = restOfProps;
+  const { name, label } = restOfProps;
 
   return (
     <div className={twMerge("relative", containerClassName ? containerClassName : "")}>
@@ -21,12 +21,12 @@ export const TextInput = (props: TextInputProps) => {
         htmlFor={name}
         className={twMerge("text-neutral-500 text-xs transition-all duration-300 peer-hover:text-green-200", labelClassName)}
       >
-        {placeholder}
+        {label}
       </label>
       <input
         id={name}
         className={twMerge(
-          "peer w-full pb-2 bg-transparent appearance-none transition-colors duration-300 border-b placeholder-transparent border-neutral-500 hover:border-green-300  placeholder-shown:border-neutral-200 focus:outline-none focus:border-green-300",
+          "peer w-full pb-2 bg-transparent appearance-none transition-colors duration-300 border-b border-neutral-500 hover:border-green-300  placeholder-shown:border-neutral-200 focus:outline-none focus:border-green-300",
           inputClassName,
           error ? "border-red-700 focus:border-red-500" : ""
         )}
