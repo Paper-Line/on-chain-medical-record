@@ -44,22 +44,22 @@ export default function Page() {
 
         <div className="mt-5 w-full flex flex-col lg:flex-row justify-between items-start gap-5">
           <div className="w-full lg:w-1/2">
-            <TextInput type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+            <TextInput type="text" label="Name" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="w-full lg:w-1/2">
-            <TextInput type="text" placeholder="Name" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <TextInput type="text" label="Email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
         </div>
         <div className="mt-5 w-full flex flex-col lg:flex-row justify-between items-start gap-5">
           <div className="w-full lg:w-1/2">
-            <TextInput type="text" placeholder="NIK" value={nik} onChange={(e) => setNik(e.target.value)} />
+            <TextInput type="text" label="NIK" placeholder="NIK" value={nik} onChange={(e) => setNik(e.target.value)} />
           </div>
           <div className="w-full lg:w-1/2">
-            <TextInput type="number" placeholder="Age" value={age} onChange={(e) => setAge(Number(e.target.value))} />
+            <TextInput type="number" label="Age" placeholder="Age" value={age} onChange={(e) => setAge(Number(e.target.value))} />
           </div>
         </div>
         <div className="mt-5 w-full ">
-          <TextInput type="text" placeholder="Address" value={address} onChange={(e) => setAddress(e.target.value)} />
+          <TextInput type="text" label="Address" placeholder="Address" value={address} onChange={(e) => setAddress(e.target.value)} />
         </div>
 
         <div
