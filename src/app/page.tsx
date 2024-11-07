@@ -14,7 +14,7 @@ import { getDetailUser, setIdentityAsUser } from "@/server/users.service";
 
 import config from "@/config";
 
-if (config.sateliteId === undefined) {
+if (config.satelliteId === undefined) {
   throw new Error("Satellite ID is not defined");
 }
 
@@ -24,7 +24,7 @@ export default function Home() {
   useEffect(() => {
     (async () =>
       await initSatellite({
-        satelliteId: config.sateliteId,
+        satelliteId: config.satelliteId,
         workers: {
           auth: true
         }
