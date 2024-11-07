@@ -1,4 +1,4 @@
-import { getDoc, setDoc, listDocs } from "@junobuild/core-peer";
+import { getDoc, setDoc, listDocs, deleteDoc } from "@junobuild/core-peer";
 import { nanoid } from "nanoid";
 
 export interface IOutlet {
@@ -10,13 +10,12 @@ export interface IOutlet {
 /**
  * Adds a new outlet to the collection.
  * @param {Object} data - The data for the new outlet.
- * @param {string} data.name - The name of the outlet.
- * @param {string} data.address - The address of the outlet.
  * @returns {Promise<Object>} The added outlet.
  */
-export async function addOutlet(data: { name: string; address: string }) {
+export async function addOutlet(data: Omit<IOutlet, "code">) {
   const code = nanoid();
-  const outlet = await setDoc({
+
+  const outletDoc = await setDoc({
     collection: "outlets",
     doc: {
       key: code,
@@ -26,7 +25,15 @@ export async function addOutlet(data: { name: string; address: string }) {
       }
     }
   });
-  return outlet;
+
+  return {
+    data: outletDoc.data as IOutlet,
+    key: outletDoc.key,
+    owner: outletDoc.owner,
+    version: outletDoc.version,
+    created_at: outletDoc.created_at,
+    updated_at: outletDoc.updated_at
+  };
 }
 
 /**
@@ -35,44 +42,93 @@ export async function addOutlet(data: { name: string; address: string }) {
  * @returns {Promise<Object>} The retrieved outlet.
  */
 export async function getOutlet(code: string) {
-  const outlet = await getDoc({
+  const outletDoc = await getDoc({
     collection: "outlets",
     key: code
   });
-  return outlet;
+  if (!outletDoc) return null;
+
+  return {
+    data: outletDoc.data as IOutlet,
+    key: outletDoc.key,
+    owner: outletDoc.owner,
+    version: outletDoc.version,
+    created_at: outletDoc.created_at,
+    updated_at: outletDoc.updated_at
+  };
 }
 
+/**
+ * Lists all outlets.
+ * @returns {Promise<Object>} The list of outlets.
+ */
 export async function listOutlets() {
   const outlets = await listDocs({
     collection: "outlets"
   });
-  return outlets;
+
+  return {
+    data: outlets.items.map((outletDoc) => ({
+      data: outletDoc.data as IOutlet,
+      key: outletDoc.key,
+      owner: outletDoc.owner,
+      version: outletDoc.version,
+      created_at: outletDoc.created_at,
+      updated_at: outletDoc.updated_at
+    })),
+    items_length: outlets.items_length, // The number of documents - basically items.length
+    items_page: outlets.items_page, // If the query is paginated, at what page (starting from 0) do the items find the place
+    matches_length: outlets.matches_length, // The total number of matching results
+    matches_pages: outlets.matches_pages // If the query is paginated, the total number (starting from 0) of pages
+  };
 }
 
-export async function updateOutlet(
-  code: string,
-  data: {
-    name: string;
-    address: string;
-  }
-) {
-  const outlet = await setDoc({
+/**
+ * Updates an outlet by its code.
+ * @param {string} code - The code of the outlet.
+ * @param {bigint} version - The version of the outlet.
+ * @param {Object} data - The data for the updated outlet.
+ * @returns {Promise<Object>} The updated outlet.
+ */
+export async function updateOutlet(code: string, version: bigint, data: Omit<IOutlet, "code">) {
+  const outletDoc = await setDoc({
     collection: "outlets",
     doc: {
       key: code,
+      version,
       data
     }
   });
-  return outlet;
+
+  return {
+    data: outletDoc.data as IOutlet,
+    key: outletDoc.key,
+    owner: outletDoc.owner,
+    version: outletDoc.version,
+    created_at: outletDoc.created_at,
+    updated_at: outletDoc.updated_at
+  };
 }
 
+/**
+ * Deletes an outlet by its code.
+ * @param {string} code - The code of the outlet.
+ * @returns {Promise<string>} The deleted outlet code.
+ */
 export async function deleteOutlet(code: string) {
-  const outlet = await setDoc({
+  // Get the latest doc
+  const outletDoc = await getDoc({
     collection: "outlets",
-    doc: {
-      key: code,
-      data: null
-    }
+    key: code
   });
-  return outlet;
+  if (!outletDoc) {
+    throw new Error("Outlet not found");
+  }
+
+  await deleteDoc({
+    collection: "outlets",
+    doc: outletDoc
+  });
+
+  return code;
 }
