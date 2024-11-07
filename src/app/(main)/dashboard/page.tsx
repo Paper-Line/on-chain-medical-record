@@ -1,18 +1,16 @@
 "use client";
 
-import { useCallback, useEffect/*, useState*/ } from "react";
-import { redirect } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 import Container from "@/components/container";
-import { Table } from "@/components/table";
 
-import useAuthStore from "@/stores/authStore";
 // import { getDetailUser as getUser, updateProfile } from "@/server/users.service";
 // import { listOutlets, addOutlet } from "@/server/outlets.service";
 // import { listMedicalHistories, addMedicalHistory } from "@/server/medicalHistories.service";
 
 import MedicalRecordIcon from "@/assets/clipboard-list.svg";
+import MedicalHistoriesTable from "@/ui/private/dashboard/medicalHistories";
 
 // TODO: Remove this example component and refactor the page, components, and services to fit your application's needs
 // This example components to demonstrate the use of the service
@@ -250,65 +248,7 @@ import MedicalRecordIcon from "@/assets/clipboard-list.svg";
 //   );
 // }
 
-const EXAMPLE_LIST = [
-  {
-    code: "XXXSAEW13EDAS34A",
-    diseaseComplaint: "Broken Legs",
-    diseaseDiagnosis: "ACL and lower leg bone is broken",
-    place: "RS Aura Syifa",
-    createdAt: Date.now()
-  },
-  {
-    code: "ASJ89DASH8XHZAU",
-    diseaseComplaint: "Broken Legs",
-    diseaseDiagnosis: "ACL and lower leg bone is broken",
-    place: "RS Aura Syifa",
-    createdAt: Date.now()
-  }
-];
-
-function DashboardPage() {
-  const { userDetail } = useAuthStore();
-
-  const medicalRecordColumns = useCallback(() => {
-    return [
-      {
-        name: "No",
-        selector: (_: any, index: number) => <p>{(Number(1) - 1) * Number(100) + index + 1}</p>,
-        center: "true",
-        width: "50px"
-      },
-      {
-        name: "Code",
-        selector: (row: any) => <p>{row.code}</p>,
-        maxWidth: "300px"
-      },
-      {
-        name: "Medical Record Date",
-        selector: (row: any) => <p className="text-pretty font-bold">{row?.createdAt}</p>,
-        maxWidth: "300px"
-      },
-      {
-        name: "Disease",
-        selector: (row: any) => <p>{row.diseaseComplaint}</p>,
-        maxWidth: "300px"
-      },
-      {
-        name: "Place",
-        selector: (row: any) => <p>{row.place}</p>
-      }
-      // {
-      //   name: "",
-      //   selector: (row: any) => <p className="font-medium text-teal-500 underlined">View Detail</p>
-      // }
-    ];
-  }, []);
-  1;
-
-  useEffect(() => {
-    if (!userDetail?.email) redirect("/account-setting");
-  }, []);
-
+async function AddMedicalRecord() {
   return (
     <main className="px-5 mt-6 sm:mt-12">
       <Container className="w-full max-w-screen-xl bg-white rounded-2xl shadow-md py-6">
@@ -327,7 +267,11 @@ function DashboardPage() {
         <div className="w-full h-px bg-neutral-200 my-6" />
 
         <div className="px-6">
-          <button className="w-fit py-2 px-5 rounded-lg bg-emerald-500 text-white font-medium">New Medical Record</button>
+          <div className="w-fit py-2 px-5 rounded-lg bg-emerald-500 text-white font-medium">
+            <Link href="/dashboard/add-medical-record" className="w-full h-full">
+              <p>New Medical Record</p>
+            </Link>
+          </div>
         </div>
       </Container>
 
@@ -342,19 +286,11 @@ function DashboardPage() {
 
         <div className="mt-5 w-full">
           {/* <ExampleReadWritePage /> */}
-          <Table
-            fixedHeader
-            columns={medicalRecordColumns()}
-            data={EXAMPLE_LIST}
-            defaultSortAsc={false}
-            pagination={false}
-            progressPending={false}
-            striped
-          />
+          <MedicalHistoriesTable />
         </div>
       </Container>
     </main>
   );
 }
 
-export default DashboardPage;
+export default AddMedicalRecord;
