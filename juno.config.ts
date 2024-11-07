@@ -1,5 +1,5 @@
 import {defineConfig} from "@junobuild/config";
-import CONFIG from "@/config";
+import CONFIG from "./src/config";
 
 if (!CONFIG.sateliteId) {
   throw new Error("Satelite ID is required");
