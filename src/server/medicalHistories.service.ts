@@ -13,6 +13,15 @@ export interface IMedicalHistory {
   place: string;
 }
 
+export interface IMedicalHistoryRecord {
+  data: IMedicalHistory;
+  key: string;
+  owner: string | undefined;
+  version: bigint | undefined;
+  created_at: bigint | undefined;
+  updated_at: bigint | undefined;
+}
+
 /**
  * Adds a new medical history to the datastore.
  * If the outletCode is provided, it will check if the outlet exists.
@@ -78,12 +87,12 @@ export async function getMedicalHistory(code: string) {
  * @param {string} filter.owner - The owner of the medical histories, provided as the code.
  * @returns {Promise<Object>} - The list of medical histories.
  */
-export async function listMedicalHistories(filter: { owner?: string }) {
-  const { owner } = filter;
+export async function listMedicalHistories(filter?: { owner?: string }) {
+  const owner = filter?.owner;
 
   const medicalHistories = await listDocs({
     collection: "medicalHistories",
-    ...(owner && { owner: owner })
+    ...(owner && { owner })
   });
 
   return {
