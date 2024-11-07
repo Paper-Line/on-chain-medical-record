@@ -8,6 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    environment: web
+
     env:
       NEXT_PUBLIC_APP_SATELITE_ID: ${{ secrets.NEXT_PUBLIC_APP_SATELITE_ID }}
       NEXT_PUBLIC_APP_ENC_KEY: ${{ secrets.NEXT_PUBLIC_APP_ENC_KEY }}
