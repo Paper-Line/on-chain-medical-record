@@ -1,13 +1,8 @@
 import {defineConfig} from "@junobuild/config";
-import CONFIG from "./src/config";
-
-if (!CONFIG.sateliteId) {
-  throw new Error("Satelite ID is required");
-}
 
 export default defineConfig({
   satellite: {
-    id: CONFIG.sateliteId,
+    id: "REPLACE-WITH-YOUR-SATELLITE-ID",
     source: "out"
   }
 });
