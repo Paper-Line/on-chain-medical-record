@@ -1,16 +1,17 @@
 "use client";
 
-import { useCallback, useEffect/*, useState*/ } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 
 import Container from "@/components/container";
 import { Table } from "@/components/table";
+import { bigIntToTimestamp } from "@/utils/general";
 
 import useAuthStore from "@/stores/authStore";
 // import { getDetailUser as getUser, updateProfile } from "@/server/users.service";
 // import { listOutlets, addOutlet } from "@/server/outlets.service";
-// import { listMedicalHistories, addMedicalHistory } from "@/server/medicalHistories.service";
+import { type IMedicalHistoryRecord, listMedicalHistories } from "@/server/medicalHistories.service";
 
 import MedicalRecordIcon from "@/assets/clipboard-list.svg";
 
@@ -250,47 +251,31 @@ import MedicalRecordIcon from "@/assets/clipboard-list.svg";
 //   );
 // }
 
-const EXAMPLE_LIST = [
-  {
-    code: "XXXSAEW13EDAS34A",
-    diseaseComplaint: "Broken Legs",
-    diseaseDiagnosis: "ACL and lower leg bone is broken",
-    place: "RS Aura Syifa",
-    createdAt: Date.now()
-  },
-  {
-    code: "ASJ89DASH8XHZAU",
-    diseaseComplaint: "Broken Legs",
-    diseaseDiagnosis: "ACL and lower leg bone is broken",
-    place: "RS Aura Syifa",
-    createdAt: Date.now()
-  }
-];
-
 function DashboardPage() {
   const { userDetail } = useAuthStore();
+  const [medicalHistories, setMedicalHistories] = useState<IMedicalHistoryRecord[]>([]);
 
   const medicalRecordColumns = useCallback(() => {
     return [
       {
-        name: "No",
+        name: "No", 
         selector: (_: any, index: number) => <p>{(Number(1) - 1) * Number(100) + index + 1}</p>,
         center: "true",
         width: "50px"
       },
       {
         name: "Code",
-        selector: (row: any) => <p>{row.code}</p>,
+        selector: (row: any) => <p>{row.key}</p>,
         maxWidth: "300px"
       },
       {
         name: "Medical Record Date",
-        selector: (row: any) => <p className="text-pretty font-bold">{row?.createdAt}</p>,
+        selector: (row: any) => <p className="text-pretty font-bold">{bigIntToTimestamp(row.created_at)}</p>,
         maxWidth: "300px"
       },
       {
         name: "Disease",
-        selector: (row: any) => <p>{row.diseaseComplaint}</p>,
+        selector: (row: any) => <p>{row.data.diseaseComplaints.toString() || "-"}</p>,
         maxWidth: "300px"
       },
       {
@@ -303,10 +288,21 @@ function DashboardPage() {
       // }
     ];
   }, []);
-  1;
+
+  const handleGetListMedicalHistories = async () => {
+    try {
+      const medicalHistories = await listMedicalHistories();
+      const { data } = medicalHistories;
+      setMedicalHistories(data);
+    } catch (error) {
+      alert("Failed to get Medical Histories");
+      console.error("Failed to get Medical Histories:", error);
+    }
+  };
 
   useEffect(() => {
     if (!userDetail?.email) redirect("/account-setting");
+    handleGetListMedicalHistories();
   }, []);
 
   return (
@@ -345,7 +341,7 @@ function DashboardPage() {
           <Table
             fixedHeader
             columns={medicalRecordColumns()}
-            data={EXAMPLE_LIST}
+            data={medicalHistories}
             defaultSortAsc={false}
             pagination={false}
             progressPending={false}
