@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +10,7 @@ import Container from "@/components/container";
 // import { listMedicalHistories, addMedicalHistory } from "@/server/medicalHistories.service";
 
 import MedicalRecordIcon from "@/assets/clipboard-list.svg";
-import MedicalHistoriesTable from "@/ui/private/dashboard/medicalHistories";
+// import MedicalHistoriesTable from "@/ui/private/dashboard/medicalHistories";
 
 // TODO: Remove this example component and refactor the page, components, and services to fit your application's needs
 // This example components to demonstrate the use of the service
@@ -286,7 +286,7 @@ function AddMedicalRecord() {
 
         <div className="mt-5 w-full">
           {/* <ExampleReadWritePage /> */}
-          <MedicalHistoriesTable />
+          {/* <MedicalHistoriesTable /> */}
         </div>
       </Container>
     </main>
