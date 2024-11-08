@@ -15,7 +15,7 @@ type AccordionProps = {
 };
 
 export const Accordion = (props: AccordionProps) => {
-  const { title, body, initialOpen, containerClassName, titleClassName, iconSize = 16 } = props;
+  const { title, body, initialOpen, containerClassName, titleClassName } = props;
 
   const [isOpen, setIsOpen] = useState(initialOpen || false);
 
