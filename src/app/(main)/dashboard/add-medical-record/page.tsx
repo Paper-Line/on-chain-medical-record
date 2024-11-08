@@ -168,4 +168,4 @@ function AddMedicalRecordPage() {
   );
 }
 
-export default DashboardPage;
+export default AddMedicalRecordPage;
