@@ -248,7 +248,7 @@ import MedicalHistoriesTable from "@/ui/private/dashboard/medicalHistories";
 //   );
 // }
 
-async function AddMedicalRecord() {
+function AddMedicalRecord() {
   return (
     <main className="px-5 mt-6 sm:mt-12">
       <Container className="w-full max-w-screen-xl bg-white rounded-2xl shadow-md py-6">
