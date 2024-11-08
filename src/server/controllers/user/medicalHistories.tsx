@@ -2,22 +2,22 @@ import { addMedicalHistoryAsUser, getMedicalHistoryByCode } from "../../features
 import { addUserMedicalHistory, getMedicalHistoriesByUserCode } from "../../features/userMedicalHistories/userMedicalHistories.service";
 
 interface IMedicalHistory {
-  userCode: string
-  diseaseComplaints: string[]
-  diagnosis: string[]
-  treatmentDescription: string[]
-  medicalPrescribed: string[]
-  cost: number
-  place: string
+  userCode: string;
+  diseaseComplaints: string[];
+  diagnosis: string[];
+  treatmentDescription: string[];
+  medicalPrescribed: string[];
+  cost: number;
+  place: string;
 }
 
-async function addMedicalHistory (data: IMedicalHistory) {
+async function addMedicalHistory(data: IMedicalHistory) {
   try {
     const medicalHistory = await addMedicalHistoryAsUser(data);
     if (!medicalHistory) {
       return undefined;
     }
-  
+
     const userMedicalHistory = await addUserMedicalHistory({
       userCode: data.userCode,
       medicalHistoryCode: medicalHistory.code
@@ -25,7 +25,7 @@ async function addMedicalHistory (data: IMedicalHistory) {
     if (!userMedicalHistory) {
       return undefined;
     }
-  
+
     return userMedicalHistory;
   } catch (error) {
     console.error(new Date().toISOString(), "- addMedicalHistory:", error);
@@ -33,18 +33,23 @@ async function addMedicalHistory (data: IMedicalHistory) {
   }
 }
 
-async function getUserMedicalHistories (data: { userCode: string }) {
+async function getUserMedicalHistories(data: { userCode: string }) {
+  if (!data?.userCode) {
+    throw new Error();
+  }
   try {
     const userMedicalHistories = await getMedicalHistoriesByUserCode(data);
     if (!userMedicalHistories) {
       return undefined;
     }
-    
-    const medicalHistories = await Promise.all(userMedicalHistories.map(async (data) => {
-      const code = data.medicalHistoryCode;
-      const medicalHistory = await getMedicalHistoryByCode({ code });
-      return medicalHistory;
-    }));
+
+    const medicalHistories = await Promise.all(
+      userMedicalHistories.map(async (data: any) => {
+        const code = data.data.medicalHistoryCode;
+        const medicalHistory = await getMedicalHistoryByCode({ code });
+        return medicalHistory;
+      })
+    );
 
     return medicalHistories.filter((item) => item !== undefined);
   } catch (error) {
@@ -53,7 +58,4 @@ async function getUserMedicalHistories (data: { userCode: string }) {
   }
 }
 
-export {
-  addMedicalHistory,
-  getUserMedicalHistories
-};
+export { addMedicalHistory, getUserMedicalHistories };
