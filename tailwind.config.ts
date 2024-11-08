@@ -18,7 +18,10 @@ const config: Config = {
         transparent: "transparent",
         current: "currentColor",
         black: "#080808",
-        white: "rgb(255 255 255)"
+        white: "rgb(255 255 255)",
+        green: {
+          main: "#26AF4C"
+        }
       }
     }
   }
