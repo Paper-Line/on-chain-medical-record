@@ -27,7 +27,7 @@ export const storage: PersistStorage<any> = {
   },
 
   setItem(key: string, value: any): void {
-    const encrypted = encrypt(JSON.stringify(typeof value === "bigint" ? value.toString() : value)) || "";
+    const encrypted = encrypt(JSON.stringify(value)) || "";
     localStorage.setItem(key, encrypted);
   },
 

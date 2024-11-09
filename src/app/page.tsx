@@ -47,7 +47,14 @@ export default function Home() {
 
         const userDetail = await getDetailUser(user?.owner || "");
         if (userDetail) {
-          userDetailData = userDetail;
+          const newDetailData = {
+            ...user,
+            created_at: bigIntToTimestamp(userDetail?.created_at || BigInt(0)),
+            updated_at: bigIntToTimestamp(userDetail?.updated_at || BigInt(0)),
+            version: Number(userDetail?.version)
+          };
+
+          userDetailData = newDetailData;
         } else {
           setIdentityAsUser(user?.owner || "")
             .then((response) => {
