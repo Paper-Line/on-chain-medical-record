@@ -22,6 +22,9 @@ const config: Config = {
         green: {
           main: "#26AF4C"
         }
+      },
+      backgroundImage: {
+        "hero-pattern": "url('/bg_hero.jpg')"
       }
     }
   }
