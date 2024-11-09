@@ -9,7 +9,7 @@ import Container from "@/components/container";
 import MedicalHistoriesTable from "@/ui/private/dashboard/medicalHistories";
 
 import { convertMillisecondsToYYYYMMDDHHMM } from "@/utils/general";
-import { useFetchMedicalHistories } from "@/hooks/fetchMedicalHistories";
+import useFetchMedicalHistories from "@/hooks/fetchMedicalHistories";
 import useAuthStore from "@/stores/authStore";
 
 function DashboardPage() {

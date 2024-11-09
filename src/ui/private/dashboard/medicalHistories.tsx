@@ -7,7 +7,7 @@ import { Table } from "@/components/table";
 
 import { bigIntStampToUniversalStamp, convertMillisecondsToYYYYMMDDHHMM } from "@/utils/general";
 
-import { useFetchMedicalHistories } from "@/hooks/fetchMedicalHistories";
+import useFetchMedicalHistories from "@/hooks/fetchMedicalHistories";
 import useAuthStore from "@/stores/authStore";
 
 export default async function MedicalHistoriesTable() {

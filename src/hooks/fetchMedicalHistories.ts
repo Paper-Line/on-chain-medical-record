@@ -3,7 +3,7 @@
 import { getUserMedicalHistories } from "@/server/controllers/user/medicalHistories";
 import { useEffect, useState } from "react";
 
-export const useFetchMedicalHistories = (userCode: string) => {
+export default function useFetchMedicalHistories(userCode: string) {
   const [medicalData, setMedicalData] = useState<any[]>([]);
 
   const handleCall = async () => {
@@ -21,4 +21,4 @@ export const useFetchMedicalHistories = (userCode: string) => {
   }, []);
 
   return { medicalData } as const;
-};
+}
