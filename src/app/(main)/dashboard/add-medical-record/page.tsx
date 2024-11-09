@@ -25,6 +25,8 @@ function AddMedicalRecordPage() {
   const [medicines, setMedicines] = useState<any[]>(["", "", "", "", "", ""]);
   const [cost, setCost] = useState<string>("");
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleAddOrRemoveMedicine = (type: string) => {
     if (type == "increase") {
       return setMedicineTotalInput((prev) => prev + 1);
@@ -45,6 +47,7 @@ function AddMedicalRecordPage() {
 
   const handleSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
 
     if (!complaints || !diagnose || !medicalCentre || !date || !medicalTreatment)
       return alert("Please fillPlease fill in all required fields");
@@ -62,14 +65,15 @@ function AddMedicalRecordPage() {
     };
 
     try {
-      const response = await addMedicalHistory(data);
-      console.log("🚀 ~ handleSubmitForm ~ response:", response);
+      await addMedicalHistory(data);
 
       alert("Medical History added");
-      router.push("/account-setting");
+      router.push("/dashboard");
     } catch (error) {
       alert("Failed to add Medical History");
       console.error("Failed to add Medical History:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -244,8 +248,8 @@ function AddMedicalRecordPage() {
             </div>
 
             <div className="mt-5 lg:mt-10 w-full flex justify-center">
-              <Button type="submit" onClick={() => {}} className="md:max-w-72">
-                Add an entry{" "}
+              <Button type="submit" onClick={() => {}} className="md:max-w-72" loading={loading}>
+                Save New Record
               </Button>
             </div>
           </form>
