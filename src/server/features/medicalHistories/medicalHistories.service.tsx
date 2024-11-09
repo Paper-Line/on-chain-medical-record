@@ -52,7 +52,7 @@ async function getMedicalHistoryByCode(data: { code: string }) {
       return undefined;
     }
 
-    return medicalHistories.data as MedicalHistory;
+    return medicalHistories;
   } catch (error) {
     throw error;
   }
