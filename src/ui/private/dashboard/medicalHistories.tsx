@@ -1,15 +1,19 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
+import { Modal } from "@/components/modal";
 import { Table } from "@/components/table";
 
 import { getUserMedicalHistories } from "@/server/controllers/user/medicalHistories";
 import useAuthStore from "@/stores/authStore";
-import { useEffect, useState } from "react";
+import { convertMillisecondsToYYYYMMDDHHMM } from "@/utils/general";
 
 export default async function MedicalHistoriesTable() {
   const { data: userData } = useAuthStore();
 
-  const [medicalData, setMedicalData] = useState([]);
+  const [medicalData, setMedicalData] = useState<any[]>([]);
+  const [selectedData, setSelectedData] = useState<any>();
 
   const handleCall = async () => {
     const medicalHistories = await getUserMedicalHistories({
@@ -19,13 +23,18 @@ export default async function MedicalHistoriesTable() {
     setMedicalData(medicalHistories as any);
   };
 
-  if (!userData?.key) return <></>;
+  const handleSelectRow = (data: any) => {
+    setSelectedData({
+      ...data.data,
+      created_at: data.created_at
+    });
+  };
 
   useEffect(() => {
     if (userData?.key) {
       handleCall();
     }
-  }, [userData]);
+  }, []);
 
   const medicalRecordColumns = () => {
     return [
@@ -37,39 +46,125 @@ export default async function MedicalHistoriesTable() {
       },
       {
         name: "Code",
-        selector: (row: any) => <p>{row.code}</p>,
+        selector: (row: any) => <p>{row.data?.code}</p>,
         maxWidth: "300px"
       },
       {
         name: "Medical Record Date",
-        selector: (row: any) => <p className="text-pretty font-bold">{row?.createdAt}</p>,
+        selector: (row: any) => <p className="text-pretty font-bold">{convertMillisecondsToYYYYMMDDHHMM(row?.created_at) || "-"}</p>,
         maxWidth: "300px"
       },
       {
         name: "Disease",
-        selector: (row: any) => <p>{row.diseaseComplaint}</p>,
+        selector: (row: any) => <p>- {row.data?.diseaseComplaints[0]}</p>,
         maxWidth: "300px"
       },
       {
         name: "Place",
-        selector: (row: any) => <p>{row.place}</p>
+        selector: (row: any) => <p>{row.data?.place}</p>
+      },
+      {
+        name: "",
+        selector: (row: any) => (
+          <button className="font-medium text-teal-500 underlined" onClick={() => handleSelectRow(row)}>
+            View Detail
+          </button>
+        )
       }
-      // {
-      //   name: "",
-      //   selector: (row: any) => <p className="font-medium text-teal-500 underlined">View Detail</p>
-      // }
     ];
   };
 
   return (
-    <Table
-      fixedHeader
-      columns={medicalRecordColumns()}
-      data={medicalData}
-      defaultSortAsc={false}
-      pagination={false}
-      progressPending={false}
-      striped
-    />
+    <>
+      <Table
+        fixedHeader
+        columns={medicalRecordColumns()}
+        data={medicalData}
+        defaultSortAsc={false}
+        pagination={false}
+        progressPending={false}
+        pointer
+        striped
+      />
+
+      <Modal
+        title="Medical Record Detail"
+        isOpen={!!selectedData}
+        onClose={() => setSelectedData(null)}
+        content={
+          <div className="w-full flex flex-col md:flex-row gap-5 justify-between">
+            <div className="w-full md:w-1/2 flex flex-col gap-y-4">
+              <div>
+                <label className="text-sm">Code</label>
+                <div className="w-full p-2.5 rounded-lg border border-gray-200">
+                  <p>{selectedData?.code}</p>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm">Date/Time</label>
+                <div className="w-full p-2.5 rounded-lg border border-gray-200">
+                  <p>{convertMillisecondsToYYYYMMDDHHMM(selectedData?.created_at)}</p>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm">Medical Centre</label>
+                <div className="w-full p-2.5 rounded-lg border border-gray-200">
+                  <p>{selectedData?.place}</p>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm">Cost</label>
+                <div className="w-full p-2.5 rounded-lg border border-gray-200">
+                  <p>{selectedData?.cost} IDR</p>
+                </div>
+              </div>
+              <div>
+                <p>Disease / Complaint:</p>
+                <div className="w-full p-2.5 rounded-lg border border-gray-200">
+                  <ul className="list-disc list-inside">
+                    {selectedData?.diseaseComplaints?.map((item: any, index: number) => {
+                      return <li key={index}>{item}</li>;
+                    })}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="w-full md:w-1/2 flex flex-col gap-y-4">
+              <div>
+                <p>Diagnoses:</p>
+                <div className="w-full p-2.5 rounded-lg border border-gray-200">
+                  <ul className="list-disc list-inside">
+                    {selectedData?.diagnosis?.map((item: any, index: number) => {
+                      return <li key={index}>{item}</li>;
+                    })}
+                  </ul>
+                </div>
+              </div>
+              <div>
+                <p>Treatments:</p>
+                <div className="w-full p-2.5 rounded-lg border border-gray-200">
+                  <ul className="list-disc list-inside">
+                    {selectedData?.treatmentDescription?.map((item: any, index: number) => {
+                      return <li key={index}>{item}</li>;
+                    })}
+                  </ul>
+                </div>
+              </div>
+              <div>
+                <p>Prescriptions:</p>
+                <div className="w-full p-2.5 rounded-lg border border-gray-200">
+                  <ul className="list-disc list-inside">
+                    {selectedData?.medicalPrescribed?.map((item: any, index: number) => {
+                      return <li key={index}>{item}</li>;
+                    })}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      />
+    </>
   );
 }
