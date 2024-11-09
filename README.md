@@ -2,6 +2,8 @@
 
 Mediuron is a secure and decentralized digital medical records platform. We enable patients to have full control over their health data, while providing easy access for authorized medical personnel. With Mediuron, your medical records are always kept confidential and accessible anytime and anywhere.
 
+Try the app [here](https://qalzx-fyaaa-aaaal-amsha-cai.icp0.io).
+
 ## ✨ Links & Resources
 
 - Looking to get started with Juno? Check out the [documentation](https://juno.build).
