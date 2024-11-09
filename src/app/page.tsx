@@ -1,6 +1,6 @@
 "use client";
 
-import { Hero, Navbar } from "@/ui/landing";
+import { About, Hero, Navbar } from "@/ui/landing";
 import { Footer } from "@/components/footer";
 import { Login } from "@/components/login";
 
@@ -19,6 +19,8 @@ export default function Home() {
       <div className="relative isolate min-h-[100dvh]">
         <Navbar />
         <Hero />
+        <About />
+        
         <main className="mx-auto max-w-screen-2xl py-16 px-8 md:px-24">
           <h1 className="text-5xl md:text-6xl font-bold tracking-tight md:pt-24">Medical Tracker</h1>
           <Login />
