@@ -10,7 +10,7 @@ import { bigIntStampToUniversalStamp, convertMillisecondsToYYYYMMDDHHMM } from "
 import useFetchMedicalHistories from "@/hooks/fetchMedicalHistories";
 import useAuthStore from "@/stores/authStore";
 
-export default async function MedicalHistoriesTable() {
+export default function MedicalHistoriesTable() {
   const { data: userData } = useAuthStore();
 
   const { medicalData } = useFetchMedicalHistories(userData?.key);
