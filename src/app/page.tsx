@@ -20,7 +20,7 @@ export default function Home() {
         <Navbar />
         <Hero />
         <About />
-        
+
         <main className="mx-auto max-w-screen-2xl py-16 px-8 md:px-24">
           <h1 className="text-5xl md:text-6xl font-bold tracking-tight md:pt-24">Medical Tracker</h1>
           <Login />
