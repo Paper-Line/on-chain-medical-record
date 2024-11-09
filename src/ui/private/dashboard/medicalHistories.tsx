@@ -1,27 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Modal } from "@/components/modal";
 import { Table } from "@/components/table";
 
-import { getUserMedicalHistories } from "@/server/controllers/user/medicalHistories";
+import { bigIntStampToUniversalStamp, convertMillisecondsToYYYYMMDDHHMM } from "@/utils/general";
+
+import { useFetchMedicalHistories } from "@/hooks/fetchMedicalHistories";
 import useAuthStore from "@/stores/authStore";
-import { convertMillisecondsToYYYYMMDDHHMM } from "@/utils/general";
 
 export default async function MedicalHistoriesTable() {
   const { data: userData } = useAuthStore();
 
-  const [medicalData, setMedicalData] = useState<any[]>([]);
+  const { medicalData } = useFetchMedicalHistories(userData?.key);
+
   const [selectedData, setSelectedData] = useState<any>();
-
-  const handleCall = async () => {
-    const medicalHistories = await getUserMedicalHistories({
-      userCode: userData.key
-    });
-
-    setMedicalData(medicalHistories as any);
-  };
 
   const handleSelectRow = (data: any) => {
     setSelectedData({
@@ -29,12 +23,6 @@ export default async function MedicalHistoriesTable() {
       created_at: data.created_at
     });
   };
-
-  useEffect(() => {
-    if (userData?.key) {
-      handleCall();
-    }
-  }, []);
 
   const medicalRecordColumns = () => {
     return [
@@ -51,7 +39,9 @@ export default async function MedicalHistoriesTable() {
       },
       {
         name: "Medical Record Date",
-        selector: (row: any) => <p className="text-pretty font-bold">{convertMillisecondsToYYYYMMDDHHMM(row?.created_at) || "-"}</p>,
+        selector: (row: any) => (
+          <p className="text-pretty font-bold">{convertMillisecondsToYYYYMMDDHHMM(bigIntStampToUniversalStamp(row?.created_at)) || "-"}</p>
+        ),
         maxWidth: "300px"
       },
       {
@@ -103,7 +93,7 @@ export default async function MedicalHistoriesTable() {
               <div>
                 <label className="text-sm">Date/Time</label>
                 <div className="w-full p-2.5 rounded-lg border border-gray-200">
-                  <p>{convertMillisecondsToYYYYMMDDHHMM(selectedData?.created_at)}</p>
+                  <p>{convertMillisecondsToYYYYMMDDHHMM(bigIntStampToUniversalStamp(selectedData?.created_at))}</p>
                 </div>
               </div>
               <div>
