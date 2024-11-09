@@ -26,7 +26,7 @@ export const TextInput = (props: TextInputProps) => {
       <input
         id={name}
         className={twMerge(
-          "peer w-full pb-2 bg-transparent appearance-none transition-colors duration-300 border-b border-neutral-500 hover:border-green-300  placeholder-shown:border-neutral-200 focus:outline-none focus:border-green-300",
+          "peer w-full pb-2 bg-transparent appearance-none transition-colors duration-300 border-b border-neutral-200 hover:border-green-300  placeholder-shown:border-neutral-200 focus:outline-none focus:border-green-300",
           inputClassName,
           error ? "border-red-700 focus:border-red-500" : ""
         )}
