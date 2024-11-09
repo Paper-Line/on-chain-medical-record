@@ -1,14 +1,31 @@
+"use client";
+
 import { Table } from "@/components/table";
 
 import { getUserMedicalHistories } from "@/server/controllers/user/medicalHistories";
 import useAuthStore from "@/stores/authStore";
-
-const { data: userData } = useAuthStore.getState();
+import { useEffect, useState } from "react";
 
 export default async function MedicalHistoriesTable() {
-  const medicalHistories = await getUserMedicalHistories({
-    userCode: userData?.key
-  });
+  const { data: userData } = useAuthStore();
+
+  const [medicalData, setMedicalData] = useState([]);
+
+  const handleCall = async () => {
+    const medicalHistories = await getUserMedicalHistories({
+      userCode: userData.key
+    });
+
+    setMedicalData(medicalHistories as any);
+  };
+
+  if (!userData?.key) return <></>;
+
+  useEffect(() => {
+    if (userData?.key) {
+      handleCall();
+    }
+  }, [userData]);
 
   const medicalRecordColumns = () => {
     return [
@@ -48,7 +65,7 @@ export default async function MedicalHistoriesTable() {
     <Table
       fixedHeader
       columns={medicalRecordColumns()}
-      data={medicalHistories}
+      data={medicalData}
       defaultSortAsc={false}
       pagination={false}
       progressPending={false}
