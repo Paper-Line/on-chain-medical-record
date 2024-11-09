@@ -31,7 +31,6 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const { data: _userData, userDetail, loggedIn, resetLoginDataAction } = useAuthStore();
-  console.log("🚀 ~ Navbar ~ userData:", userDetail);
 
   const [showMobileSidebar, setShowMobileSidebar] = useState<boolean>(false);
 

@@ -10,7 +10,7 @@ import Container from "@/components/container";
 // import { listMedicalHistories, addMedicalHistory } from "@/server/medicalHistories.service";
 
 import MedicalRecordIcon from "@/assets/clipboard-list.svg";
-// import MedicalHistoriesTable from "@/ui/private/dashboard/medicalHistories";
+import MedicalHistoriesTable from "@/ui/private/dashboard/medicalHistories";
 
 // TODO: Remove this example component and refactor the page, components, and services to fit your application's needs
 // This example components to demonstrate the use of the service
@@ -248,7 +248,7 @@ import MedicalRecordIcon from "@/assets/clipboard-list.svg";
 //   );
 // }
 
-function AddMedicalRecord() {
+function DashboardPage() {
   return (
     <main className="px-5 mt-6 sm:mt-12">
       <Container className="w-full max-w-screen-xl bg-white rounded-2xl shadow-md py-6">
@@ -286,11 +286,11 @@ function AddMedicalRecord() {
 
         <div className="mt-5 w-full">
           {/* <ExampleReadWritePage /> */}
-          {/* <MedicalHistoriesTable /> */}
+          <MedicalHistoriesTable />
         </div>
       </Container>
     </main>
   );
 }
 
-export default AddMedicalRecord;
+export default DashboardPage;
