@@ -47,11 +47,11 @@ export default function Home() {
 
         const userDetail = await getDetailUser(user?.owner || "");
         if (userDetail) {
-          userDetailData = userDetail.data;
+          userDetailData = userDetail;
         } else {
           setIdentityAsUser(user?.owner || "")
             .then((response) => {
-              userDetailData = response.data;
+              userDetailData = response;
             })
             .catch(() => {
               console.error("Failed to set identity");

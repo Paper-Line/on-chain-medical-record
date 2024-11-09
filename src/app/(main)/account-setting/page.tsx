@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 
@@ -10,13 +10,57 @@ import { TextInput } from "@/components/input";
 import CheckGreenIcon from "@/assets/check-green.svg";
 import EditIcon from "@/assets/edit.svg";
 
+import useAuthStore from "@/stores/authStore";
+import { getDetailUser, updateProfile } from "@/server/users.service";
+
 export default function Page() {
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [isLoadingUpdate, setIsLoadingUpdate] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [nik, setNik] = useState<string>("");
   const [age, setAge] = useState<number | undefined>(undefined);
   const [address, setAddress] = useState<string>("");
+  const { userDetail } = useAuthStore();
+
+  const handleGetProfile = async () => {
+    try {
+      const result = await getDetailUser(userDetail.key);
+      if (result) {
+        setName(result.data.name);
+        setEmail(result.data.email);
+        setNik(result.data.NIK);
+        setAge(result.data.age);
+        setAddress(result.data.address);
+      } else {
+        console.log("User not found");
+      }
+    } catch (error) {
+      console.log("Failed to get profile", error);
+    }
+  };
+
+  const handleUpdateProfile = async () => {
+    setIsLoadingUpdate(true);
+    try {
+      await updateProfile(userDetail.key, BigInt(userDetail.version), {
+        name,
+        email,
+        NIK: nik,
+        age: Number(age) || 0,
+        address
+      });
+      alert("Profile updated successfully");
+    } catch (error) {
+      alert("Failed to update profile");
+    } finally {
+      setIsLoadingUpdate(false);
+    }
+  };
+
+  useEffect(() => {
+    handleGetProfile();
+  }, []);
 
   return (
     <main className="px-2.5 sm:px-5 mt-6 sm:mt-12">
@@ -25,7 +69,7 @@ export default function Page() {
         <div className="-mt-6 h-full flex flex-row items-end gap-x-2 px-4">
           <div className="w-20 h-20 bg-red-200 border-2 border-neutral-100 rounded-full" />
           <div className="-mt-1">
-            <p className="text-2xl text-neutral-900 font-semibold">{"User Name"}</p>
+            <p className="text-2xl text-neutral-900 font-semibold">{userDetail?.data?.name || "-"}</p>
             <div className="flex flex-row items-center gap-x-1">
               <Image src={CheckGreenIcon} alt={"check"} width={14} height={14} />
               <p className="text-sm text-neutral-500">Subscriber since 2024</p>
@@ -37,7 +81,7 @@ export default function Page() {
       <Container className="mt-10 w-full max-w-screen-lg bg-white rounded-xl py-5 px-3">
         <div className="w-full flex flex-row justify-between items-center">
           <h5 className="font-medium">Identity Details</h5>
-          <button onClick={() => setEditMode(true)} className={editMode ? "hidden" : "block"}>
+          <button disabled={isLoadingUpdate} onClick={() => setEditMode(true)} className={editMode ? "hidden" : "block"}>
             <Image src={EditIcon} alt={"check"} width={16} height={16} />
           </button>
         </div>
@@ -71,11 +115,16 @@ export default function Page() {
           <button
             className="w-1/2 h-10 px-4 bg-red-400/20 text-red-600 text-lg font-medium border border-red-300 rounded-full"
             onClick={() => setEditMode(false)}
+            disabled={isLoadingUpdate}
           >
             Cancel
           </button>
-          <button className="w-1/2 h-10 px-4 bg-green-400/20 text-green-600 text-lg font-medium border border-green-300 rounded-full">
-            Save
+          <button
+            className="w-1/2 h-10 px-4 bg-green-400/20 text-green-600 text-lg font-medium border border-green-300 rounded-full"
+            onClick={handleUpdateProfile}
+            disabled={isLoadingUpdate}
+          >
+            {isLoadingUpdate ? "Loading..." : "Save"}
           </button>
         </div>
       </Container>
